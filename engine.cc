@@ -16,9 +16,10 @@ img::EasyImage generate_image(const ini::Configuration& configuration)
     const std::vector<double> linecolor  = configuration["2DLSystem"]["color"];
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
-    std::ifstream input_stream("config/" + path);
-    LParser::LSystem2D l_system;
+    std::ifstream input_stream("../config/" + path);
     if(!input_stream.is_open()) throw std::runtime_error("could not open the L2D file");
+
+    LParser::LSystem2D l_system;
 
     input_stream >> l_system;
     input_stream.close();
