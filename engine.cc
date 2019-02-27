@@ -8,7 +8,6 @@
 #include <stdexcept>
 #include <string>
 
-
 img::EasyImage generate_image(const ini::Configuration& configuration)
 {
     const int         size = configuration["General"]["size"];
