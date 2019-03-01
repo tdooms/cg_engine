@@ -7,8 +7,9 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include "math/mat4.h"
 
-img::EasyImage generate_image(const ini::Configuration& configuration)
+img::EasyImage generate_L2D(const ini::Configuration& configuration)
 {
     const int         size = configuration["General"]["size"];
     const std::string path = configuration["2DLSystem"]["inputfile"];
@@ -20,12 +21,31 @@ img::EasyImage generate_image(const ini::Configuration& configuration)
     if(!input_stream.is_open()) throw std::runtime_error("could not open the L2D file");
 
     LParser::LSystem2D l_system;
-
     input_stream >> l_system;
     input_stream.close();
 
     LSystemRenderer renderer = {l_system, linecolor};
     return renderer.generateImage(background, size);
+}
+
+img::EasyImage generate_wireframe(const ini::Configuration& configuration)
+{
+    const int size = configuration["General"]["size"];
+
+    mat4 m0 = mat4::createTotalTranslationMatrix({1,1,1}, 1, {0,0,0});
+    std::cout << m0 << '\n';
+    return img::EasyImage(size, size);
+}
+
+img::EasyImage generate_image(const ini::Configuration& configuration)
+{
+    const std::string type = configuration["General"]["type"];
+
+    if     (type == "2DLSystem") return generate_L2D(configuration);
+    else if(type == "Wireframe") return generate_wireframe(configuration);
+    else std::cerr << "unknown type\n";
+
+    return img::EasyImage();
 }
 
 int main(int argc, char const* argv[])

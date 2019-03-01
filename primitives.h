@@ -35,9 +35,18 @@ struct Line2D
     Color color;
 };
 
+struct Mesh
+{
+    std::vector<Point2D> points;
+    std::vector<std::pair<int, int>> lines;
+    Color color;
+};
+
+
 typedef std::forward_list<Line2D> Lines2D;
 
 img::EasyImage draw2DLines(const Lines2D& lines, const Color& background, int size);
+
 
 
 
