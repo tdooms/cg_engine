@@ -33,8 +33,8 @@ vec4& vec4::operator/=(const vec4& v)
 vec4& vec4::operator*=(const mat4& m)
 {
     double temp[4];
-    matvecmul((double*)&m, data, temp);
-    memcpy(data, temp, 16);
+    vecmatmul(data, (double*)&m, temp);
+    memcpy(data, temp, 4*sizeof(double));
     return *this;
 }
 vec4& vec4::operator*=(double s)

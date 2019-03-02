@@ -31,10 +31,17 @@ img::EasyImage generate_L2D(const ini::Configuration& configuration)
 img::EasyImage generate_wireframe(const ini::Configuration& configuration)
 {
     const int size = configuration["General"]["size"];
+    const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
-    mat4 m0 = mat4::createTotalTranslationMatrix({1,1,1}, 1, {0,0,0});
-    std::cout << m0 << '\n';
-    return img::EasyImage(size, size);
+    uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
+    Figures3D figures;
+
+    for(uint32_t i = 0; i < numFigures; i++) figures.push_front(parseFigure(configuration["Figure" + std::to_string(i)]));
+
+    std::vector<double> eyePos = configuration["General"]["eye"];
+    mat4 eyeSpace = mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
+    Lines2D lines = doProjection(figures, eyeSpace, 1);
+    return draw2DLines(lines, background, size);
 }
 
 img::EasyImage generate_image(const ini::Configuration& configuration)

@@ -17,7 +17,7 @@ mat4::mat4(const vec4& v0, const vec4& v1, const vec4& v2, const vec4& v3) :
 
 mat4::mat4(const double* f)
 {
-    memcpy(data, f, 64);
+    memcpy(data, f, 16*sizeof(double));
 }
 
 /*----------------------------------------*/
@@ -67,7 +67,6 @@ mat4 mat4::createTotalTranslationMatrix(const std::vector<double>& translation, 
 {
     return createTranslationMatrix(translation[0], translation[1], translation[2]) * createRotationMatrix(rotation[0], rotation[1], rotation[2]) * createScalarMatrix(scale);
 }
-
 mat4 mat4::createEyeTransformationMatrix(double x, double y, double z)
 {
     double r = sqrt(x*x + y*y + z*z);
@@ -106,7 +105,7 @@ mat4& mat4::operator*=(const mat4& m)
 {
     double temp[16];
     matmul(data, m.data, temp);
-    memcpy(data, temp, 64);
+    memcpy(data, temp, 16*sizeof(double));
     return *this;
 }
 
