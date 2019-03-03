@@ -43,19 +43,19 @@ mat4 mat4::createZRotationMatrix(double alpha)
 {
     double sina = std::sin(alpha);
     double cosa = std::cos(alpha);
-    return {{cosa, -sina, 0, 0}, {sina, cosa, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
+    return {{cosa, sina, 0, 0}, {-sina, cosa, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}};
 }
 mat4 mat4::createXRotationMatrix(double alpha)
 {
     double sina = std::sin(alpha);
     double cosa = std::cos(alpha);
-    return {{1, 0, 0, 0}, {0, cosa, -sina, 0}, {0, sina, cosa, 0}, {0, 0, 0, 1}};
+    return {{1, 0, 0, 0}, {0, cosa, sina, 0}, {0, -sina, cosa, 0}, {0, 0, 0, 1}};
 }
 mat4 mat4::createYRotationMatrix(double alpha)
 {
     double sina = std::sin(alpha);
     double cosa = std::cos(alpha);
-    return {{cosa, 0, sina, 0}, {0, 1, 0, 0}, {-sina, 0, cosa, 0}, {0, 0, 0, 1}};
+    return {{cosa, 0, -sina, 0}, {0, 1, 0, 0}, {sina, 0, cosa, 0}, {0, 0, 0, 1}};
 }
 
 mat4 mat4::createRotationMatrix(double alphaX, double alphaY, double alphaZ)
@@ -65,12 +65,12 @@ mat4 mat4::createRotationMatrix(double alphaX, double alphaY, double alphaZ)
 
 mat4 mat4::createTotalTranslationMatrix(const std::vector<double>& translation, double scale, const std::vector<double>& rotation)
 {
-    return createTranslationMatrix(translation[0], translation[1], translation[2]) * createRotationMatrix(rotation[0], rotation[1], rotation[2]) * createScalarMatrix(scale);
+    return createScalarMatrix(scale) * createRotationMatrix(rotation[0], rotation[1], rotation[2]) * createTranslationMatrix(translation[0], translation[1], translation[2]);
 }
 mat4 mat4::createEyeTransformationMatrix(double x, double y, double z)
 {
     double r = sqrt(x*x + y*y + z*z);
-    double theta = std::atan(y/x);
+    double theta = std::atan2(y,x);
     double phi = std::acos(z/r);
 
     double sinp = std::sin(phi);    double cosp = std::cos(phi);

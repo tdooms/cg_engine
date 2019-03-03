@@ -39,7 +39,8 @@ Figure3D parseFigure(const ini::Section& section)
 {
     if(static_cast<std::string>(section["type"]) != "LineDrawing") std::cerr << "only linedrawing type is supported\n";
 
-    const std::vector<double> rotation = {section["rotateX"], section["rotateY"], section["rotateZ"]};
+    std::vector<double> rotation = {section["rotateX"], section["rotateY"], section["rotateZ"]};
+    for(auto& item : rotation) item *= M_PI / 180.0;
     mat4 transform = mat4::createTotalTranslationMatrix(section["center"], section["scale"], rotation);
 
     uint32_t numPoints = static_cast<uint32_t>((int)section["nrPoints"]);
@@ -74,8 +75,7 @@ Lines2D doProjection(Figures3D& figures, const mat4& matrix, const double d)
         for (auto& point : figure.points)
         {
             point *= matrix;        // apply translation
-            point *= d / point[2];  // apply depth division
-            const vec4 x = point;
+            point *= -(d/point[2]);  // apply depth division
         }
         for (const auto& face : figure.faces)
         {
