@@ -1,6 +1,11 @@
-//
-// Created by Thomas on 10/01/2019.
-//
+//============================================================================
+// @name        : mat4.cpp
+// @author      : Thomas Dooms
+// @date        : 10/01/19
+// @version     : 1.1
+// @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
+// @description : math classes inspired by GLSL, uses ^ for elementwise multiplications.
+//============================================================================
 
 #include "mat4.h"
 #include "math.h"

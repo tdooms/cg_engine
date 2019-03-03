@@ -26,7 +26,7 @@ private:
     inline void recursiveEval(char symbol, uint32_t depth);
     inline void addLine();
 
-    std::stack<std::pair<Point2D, double>> pos;
+    std::stack<std::pair<vec2, double>> pos;
     double angle;
     uint32_t maxDepth;
 

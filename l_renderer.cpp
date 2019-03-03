@@ -34,8 +34,8 @@ bool LSystemRenderer::exists(char c) const
 
 void LSystemRenderer::addLine()
 {
-    double newX = pos.top().first.x + std::cos(pos.top().second);
-    double newY = pos.top().first.y + std::sin(pos.top().second);
-    lines.emplace_front(pos.top().first, Point2D{newX, newY}, lineColor);
+    double newX = pos.top().first[0] + std::cos(pos.top().second);
+    double newY = pos.top().first[1] + std::sin(pos.top().second);
+    lines.emplace_front(pos.top().first, vec2{newX, newY}, lineColor);
     pos.top().first = {newX, newY};
 }

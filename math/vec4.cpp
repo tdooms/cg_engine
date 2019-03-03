@@ -1,6 +1,11 @@
-//
-// Created by Thomas on 10/01/2019.
-//
+//============================================================================
+// @name        : vec4.cpp
+// @author      : Thomas Dooms
+// @date        : 10/01/19
+// @version     : 1.1
+// @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
+// @description : math classes inspired by GLSL, uses ^ for elementwise multiplications.
+//============================================================================
 
 #include "vec4.h"
 #include "math.h"
@@ -90,10 +95,6 @@ vec4 operator/(double s, const vec4& a)
 
 /*----------------------------------------*/
 
-vec4 cross(const vec4& a, const vec4& b)
-{
-    return {a[1]*b[2]-a[2]*b[1], a[0]*b[2]-a[2]*b[0], a[0]*b[1]-a[1]*b[0], 0};
-}
 double norm(const vec4& a)
 {
     return dot(a, a);
@@ -110,7 +111,6 @@ vec4& normalize(vec4& a)
 {
     return a /= norm(a);
 }
-
 
 std::ostream& operator<<(std::ostream& stream, const vec4& a)
 {

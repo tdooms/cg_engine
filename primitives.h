@@ -26,23 +26,17 @@ struct Color
     Color() = default;
 };
 
-struct Point2D
-{
-    double x;
-    double y;
-};
-
 struct Line2D
 {
-    Line2D(const Point2D& p1, const Point2D& p2, const Color& color) : p1(p1), p2(p2), color(color) {}
-    Point2D p1;
-    Point2D p2;
+    Line2D(const vec2& p1, const vec2& p2, const Color& color) : p1(p1), p2(p2), color(color) {}
+    vec2 p1;
+    vec2 p2;
     Color color;
 };
 
 struct Figure3D
 {
-    std::vector<vec4> points;
+    std::vector<vec3> points;
     std::vector<std::vector<uint32_t>> faces;
     Color color;
 };
@@ -53,7 +47,7 @@ typedef std::forward_list<Figure3D> Figures3D;
 img::EasyImage draw2DLines(const Lines2D& lines, const Color& background, int size);
 
 Figure3D parseFigure(const ini::Section& section);
-Lines2D doProjection(Figures3D& figures, const mat4& matrix, const double d);
+Lines2D doProjection(Figures3D& figures, const mat4& matrix, double d);
 
 
 

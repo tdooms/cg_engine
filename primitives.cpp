@@ -6,15 +6,15 @@
 
 img::EasyImage draw2DLines(const Lines2D& lines, const Color& background, const int size)
 {
-    const auto x0 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p1.x < b.p1.x; });
-    const auto x1 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p2.x < b.p2.x; });
-    const auto y0 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p1.y < b.p1.y; });
-    const auto y1 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p2.y < b.p2.y; });
+    const auto x0 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p1[0] < b.p1[0]; });
+    const auto x1 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p2[0] < b.p2[0]; });
+    const auto y0 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p1[1] < b.p1[1]; });
+    const auto y1 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p2[1] < b.p2[1]; });
 
-    const double xMax = std::max((*x0.second).p1.x, (*x1.second).p2.x);
-    const double xMin = std::min((*x0.first ).p1.x, (*x1.first ).p2.x);
-    const double yMax = std::max((*y0.second).p1.y, (*y1.second).p2.y);
-    const double yMin = std::min((*y0.first ).p1.y, (*y1.first ).p2.y);
+    const double xMax = std::max((*x0.second).p1[0], (*x1.second).p2[0]);
+    const double xMin = std::min((*x0.first ).p1[0], (*x1.first ).p2[0]);
+    const double yMax = std::max((*y0.second).p1[1], (*y1.second).p2[1]);
+    const double yMin = std::min((*y0.first ).p1[1], (*y1.first ).p2[1]);
 
     double xRange = xMax - xMin;
     double yRange = yMax - yMin;
@@ -30,7 +30,7 @@ img::EasyImage draw2DLines(const Lines2D& lines, const Color& background, const 
 
     for(const Line2D& line : lines)
     {
-        image.draw_line(uint32_t(line.p1.x*scale + dx), uint32_t(line.p1.y*scale + dy), uint32_t(line.p2.x*scale + dx),uint32_t(line.p2.y*scale + dy), static_cast<img::Color>(line.color));
+        image.draw_line(uint32_t(line.p1[0]*scale + dx), uint32_t(line.p1[1]*scale + dy), uint32_t(line.p2[0]*scale + dx),uint32_t(line.p2[1]*scale + dy), static_cast<img::Color>(line.color));
     }
     return image;
 }
@@ -47,7 +47,7 @@ Figure3D parseFigure(const ini::Section& section)
     uint32_t numLines  = static_cast<uint32_t>((int)section["nrLines" ]);
 
     Figure3D figure;
-    figure.points = std::vector<vec4>();
+    figure.points = std::vector<vec3>();
     figure.faces = std::vector<std::vector<uint32_t>>();
     figure.points.reserve(numPoints);
     figure.faces.reserve(numLines);
@@ -79,8 +79,8 @@ Lines2D doProjection(Figures3D& figures, const mat4& matrix, const double d)
         }
         for (const auto& face : figure.faces)
         {
-            const Point2D p1 = {figure.points[face[0]].getX(), figure.points[face[0]].getY()};
-            const Point2D p2 = {figure.points[face[1]].getX(), figure.points[face[1]].getY()};
+            const vec2 p1 = figure.points[face[0]].xy();
+            const vec2 p2 = figure.points[face[1]].xy();
             lines.emplace_front(p1, p2, figure.color);
         }
     }
