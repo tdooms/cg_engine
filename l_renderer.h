@@ -17,7 +17,7 @@
 class LSystemRenderer
 {
 public:
-    LSystemRenderer(const LParser::LSystem2D& l_system, Color lineColor);
+    LSystemRenderer(const LParser::LSystem2D& l_system, const Color& lineColor);
 
     img::EasyImage generateImage(const Color& background, int size) const;
 
@@ -26,7 +26,7 @@ private:
     inline void recursiveEval(char symbol, uint32_t depth);
     inline void addLine();
 
-    std::stack<std::pair<vec2, double>> pos;
+    std::stack<std::pair<Vec2, double>> pos;
     double angle;
     uint32_t maxDepth;
 

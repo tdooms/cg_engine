@@ -1,7 +1,7 @@
 #include "l_renderer.h"
 
 
-LSystemRenderer::LSystemRenderer(const LParser::LSystem2D& info, Color lineColor) : lineColor(lineColor), info(info)
+LSystemRenderer::LSystemRenderer(const LParser::LSystem2D& info, const Color& lineColor) : lineColor(lineColor), info(info)
 {
     maxDepth = info.get_nr_iterations();
     angle    = info.get_angle() * M_PI/180.0;
@@ -36,6 +36,6 @@ void LSystemRenderer::addLine()
 {
     double newX = pos.top().first[0] + std::cos(pos.top().second);
     double newY = pos.top().first[1] + std::sin(pos.top().second);
-    lines.emplace_front(pos.top().first, vec2{newX, newY}, lineColor);
+    lines.emplace_front(pos.top().first, Vec2{newX, newY}, lineColor);
     pos.top().first = {newX, newY};
 }

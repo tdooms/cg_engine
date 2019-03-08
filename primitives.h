@@ -14,30 +14,22 @@
 
 #include "math/mat4.h"
 #include "math/vec4.h"
-
-struct Color
-{
-    double red;
-    double green;
-    double blue;
-    // conversion function, allows casts from Color to img::Color
-    explicit operator img::Color() const { return {static_cast<uint8_t>(red*255.99), static_cast<uint8_t>(green*255.99), static_cast<uint8_t>(blue*255.99)}; }
-    Color(const std::vector<double>& values) : red(values[0]), green(values[1]), blue(values[2]) {}
-    Color() = default;
-};
+#include "math/color.h"
 
 struct Line2D
 {
-    Line2D(const vec2& p1, const vec2& p2, const Color& color) : p1(p1), p2(p2), color(color) {}
-    vec2 p1;
-    vec2 p2;
+    Line2D(const Vec2& p1, const Vec2& p2, const Color& color) : p1(p1), p2(p2), color(color) {}
+    Vec2 p1;
+    Vec2 p2;
     Color color;
 };
 
 struct Figure3D
 {
-    std::vector<vec3> points;
-    std::vector<std::vector<uint32_t>> faces;
+    Figure3D(uint32_t numVertices, uint32_t numIndices, Color color) : vertices(numVertices), indices(numIndices), color(color) {}
+
+    std::vector<Vec3> vertices;
+    std::vector<std::array<uint32_t, 2>> indices;
     Color color;
 };
 
@@ -47,9 +39,7 @@ typedef std::forward_list<Figure3D> Figures3D;
 img::EasyImage draw2DLines(const Lines2D& lines, const Color& background, int size);
 
 Figure3D parseFigure(const ini::Section& section);
-Lines2D doProjection(Figures3D& figures, const mat4& matrix, double d);
-
-
+Lines2D doProjection(Figures3D& figures, const Mat4& matrix, double d);
 
 
 #endif //ENGINE_PRIMITIVES_H

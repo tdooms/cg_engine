@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "easy_image.h"
+#include "primitives.h"
 #include <algorithm>
 #include <assert.h>
 #include <math.h>
@@ -144,6 +145,12 @@ img::EasyImage::EasyImage() :
 {
 }
 
+img::EasyImage::EasyImage(double _width, double _height, const Vec3& color) :
+EasyImage(static_cast<uint32_t>(std::round(_width)), static_cast<uint32_t>(std::round(_height)),
+		{ static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) })
+{
+}
+
 img::EasyImage::EasyImage(unsigned int _width, unsigned int _height, Color color) :
 	width(_width), height(_height), bitmap(width * height, color)
 {
@@ -199,6 +206,11 @@ img::Color const& img::EasyImage::operator()(unsigned int x, unsigned int y) con
 	return bitmap.at(x * height + y);
 }
 
+void img::EasyImage::draw_line(const Vec2& p1, const Vec2& p2, const Vec3& color)
+{
+    draw_line(static_cast<uint32_t>(std::round(p1[0])), static_cast<uint32_t>(std::round(p1[1])), static_cast<uint32_t>(std::round(p2[0])), static_cast<uint32_t>(std::round(p2[1])),
+    		{static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99)});
+}
 void img::EasyImage::draw_line(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, Color color)
 {
 	assert(x0 < this->width && y0 < this->height);

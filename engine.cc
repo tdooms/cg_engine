@@ -2,12 +2,12 @@
 #include "ini_configuration.h"
 #include "l_parser.h"
 #include "l_renderer.h"
+#include "math/mat4.h"
 
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include "math/mat4.h"
 
 img::EasyImage generate_L2D(const ini::Configuration& configuration)
 {
@@ -36,10 +36,10 @@ img::EasyImage generate_wireframe(const ini::Configuration& configuration)
     uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
     Figures3D figures;
 
-    for(uint32_t i = 0; i < numFigures; i++) figures.push_front(parseFigure(configuration["Figure" + std::to_string(i)]));
+    for(uint32_t i = 0; i < numFigures; i++) figures.push_front(parseFigure(configuration["Figure" + std::to_string(0)]));
 
     std::vector<double> eyePos = configuration["General"]["eye"];
-    mat4 eyeSpace = mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
+    Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
     Lines2D lines = doProjection(figures, eyeSpace, 1);
     return draw2DLines(lines, background, size);
 }

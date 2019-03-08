@@ -20,6 +20,10 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+
+#include "math/vec2.h"
+#include "math/vec3.h"
+struct Line2D;
 /**
  * \brief The namespace of the EasyImage class
  */
@@ -137,7 +141,9 @@ namespace img
 			 * \param height	the height of the image
 			 * \param color		(optional) the background color of the image
 			 */
+			EasyImage(double width, double height, const Vec3& color);
 			EasyImage(unsigned int width, unsigned int height, Color color = Color());
+
 
 			/**
 			 * \brief Copy Constructor
@@ -217,6 +223,7 @@ namespace img
 			 * 	assert(x1 < getWidth())
 			 * 	assert(y1 < getHeight())
 			 */
+            void draw_line(const Vec2& p1, const Vec2& p2, const Vec3& color);
 			void draw_line(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, Color color);
 
 		private:
