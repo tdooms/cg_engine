@@ -1578,7 +1578,7 @@ namespace ini
 
                 for(ConstSectionIter i = first_section; i != last_section; ++i)
                 {
-                        // Print a blank line between sections.
+                        // Print a blank line2D between sections.
                         if(i != first_section)
                         {
                                 output_stream << std::endl;

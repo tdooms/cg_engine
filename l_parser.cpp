@@ -104,7 +104,7 @@ namespace
 				}
 				else
 					col++;
-				//goto next line when next char is read
+				//goto next line2D when next char is read
 				if (c == '\n')
 				{
 					endOfLineRead = true;
@@ -487,7 +487,7 @@ LParser::ParserException::ParserException(std::string const& msg, unsigned int l
 	std::exception(), message()
 {
 	std::stringstream s;
-	s << "Parser error at line: " << line << " pos: " << pos << " " << msg;
+	s << "Parser error at line2D: " << line << " pos: " << pos << " " << msg;
 	message = s.str();
 }
 

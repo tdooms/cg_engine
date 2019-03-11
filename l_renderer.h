@@ -9,16 +9,15 @@
 #define ENGINE_L_RENDERER_H
 
 #include "l_parser.h"
-#include "primitives.h"
+#include "geometry/lines2D.h"
 #include "easy_image.h"
 #include <stack>
 #include <cmath>
 
-class LSystemRenderer
+class LSystem2DRenderer
 {
 public:
-    LSystemRenderer(const LParser::LSystem2D& l_system, const Color& lineColor);
-
+    LSystem2DRenderer(const LParser::LSystem2D& l_system, const Color& lineColor);
     img::EasyImage generateImage(const Color& background, int size) const;
 
 private:
@@ -30,10 +29,45 @@ private:
     double angle;
     uint32_t maxDepth;
 
-    Lines2D lines;
+    std::forward_list<Line2D> lines;
     Color lineColor;
 
     const LParser::LSystem2D& info;
+};
+
+
+struct Pos
+{
+    Vec3 p;
+    Vec3 h;
+    Vec3 l;
+    Vec3 u;
+    uint32_t index;
+};
+
+
+class LSystem3DRenderer
+{
+public:
+    LSystem3DRenderer(const LParser::LSystem3D& l_system, const Color& lineColor);
+    Mesh generateMesh() const;
+
+private:
+    inline bool exists(char c) const;
+    inline void recursiveEval(char symbol, uint32_t depth);
+    inline void addLine();
+
+    // Position - Forward(H) - Left(L) - Up(U) - last index
+    std::stack<Pos> pos;
+    double angle;
+    uint32_t maxDepth;
+
+    std::forward_list<std::tuple<Vec3, uint32_t, uint32_t>> lines;
+
+    uint32_t lastIndex;
+    Color lineColor;
+
+    const LParser::LSystem3D& info;
 };
 
 

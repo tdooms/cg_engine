@@ -10,6 +10,7 @@
 #include "vec4.h"
 #include "math.h"
 #include <cstring>
+#include <cmath>
 
 /*----------------------------------------*/
 
@@ -105,11 +106,11 @@ double dot(const Vec4& a, const Vec4& b)
 }
 Vec4 normalize(const Vec4& a)
 {
-    return a / norm(a);
+    return a / sqrt(norm(a));
 }
 Vec4& normalize(Vec4& a)
 {
-    return a /= norm(a);
+    return a /= sqrt(norm(a));
 }
 
 std::ostream& operator<<(std::ostream& stream, const Vec4& a)

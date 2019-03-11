@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "easy_image.h"
-#include "primitives.h"
 #include <algorithm>
 #include <assert.h>
 #include <math.h>
@@ -317,7 +316,7 @@ std::ostream& img::operator<<(std::ostream& out, EasyImage const& image)
 		//loop over all lines
 		for (unsigned int j = 0; j < image.get_width(); j++)
 		{
-			//loop over all pixels in a line
+			//loop over all pixels in a line2D
 			//we cast &color to char*. since the color fields are ordered blue,green,red they should be written automatically
 			//in the right order
 			out.write((char*) &image(j, i), 3 * sizeof(uint8_t));
@@ -335,7 +334,7 @@ std::istream& img::operator>>(std::istream& in, EasyImage & image)
 	bmpfile_magic magic;
 	bmpfile_header file_header;
 	bmp_header header;
-	//a temp buffer for reading the padding at the end of each line
+	//a temp buffer for reading the padding at the end of each line2D
 	uint8_t padding[] =
 	{ 0, 0, 0, 0 };
 
@@ -370,7 +369,7 @@ std::istream& img::operator>>(std::istream& in, EasyImage & image)
 		//loop over all lines
 		for (unsigned int j = 0; j < image.get_width(); j++)
 		{
-			//loop over all pixels in a line
+			//loop over all pixels in a line2D
 			//we cast &color to char*. since the color fields are ordered blue,green,red, the data read should be written in the right variables
 			if (invertedLines)
 			{

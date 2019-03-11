@@ -4,6 +4,9 @@
 #include "l_renderer.h"
 #include "math/mat4.h"
 
+#include "geometry/mesh.h"
+#include "geometry/lines2D.h"
+
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -24,7 +27,7 @@ img::EasyImage generate_L2D(const ini::Configuration& configuration)
     input_stream >> l_system;
     input_stream.close();
 
-    LSystemRenderer renderer = {l_system, linecolor};
+    LSystem2DRenderer renderer = {l_system, linecolor};
     return renderer.generateImage(background, size);
 }
 
@@ -33,15 +36,18 @@ img::EasyImage generate_wireframe(const ini::Configuration& configuration)
     const int size = configuration["General"]["size"];
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
-    uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
-    Figures3D figures;
-
-    for(uint32_t i = 0; i < numFigures; i++) figures.push_front(parseFigure(configuration["Figure" + std::to_string(0)]));
-
     std::vector<double> eyePos = configuration["General"]["eye"];
     Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
-    Lines2D lines = doProjection(figures, eyeSpace, 1);
-    return draw2DLines(lines, background, size);
+
+    uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
+
+    std::vector<Mesh> figures(numFigures);
+    for(uint32_t i = 0; i < numFigures; i++)
+    {
+        figures[i] =  Mesh::parseFigure(configuration["Figure" + std::to_string(i)], eyeSpace) ;
+    }
+
+    return drawFigures(figures, background, size, 1);
 }
 
 img::EasyImage generate_image(const ini::Configuration& configuration)

@@ -11,6 +11,7 @@
 #include "vec2.h"
 #include "math.h"
 #include <cstring>
+#include <cmath>
 
 /*----------------------------------------*/
 
@@ -105,11 +106,11 @@ double dot(const Vec2& a, const Vec2& b)
 }
 Vec2 normalize(const Vec2& a)
 {
-    return a / norm(a);
+    return a / sqrt(norm(a));
 }
 Vec2& normalize(Vec2& a)
 {
-    return a /= norm(a);
+    return a /= sqrt(norm(a));
 }
 
 std::ostream& operator<<(std::ostream& stream, const Vec2& a)
