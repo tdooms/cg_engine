@@ -20,10 +20,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
-
-#include "math/vec2.h"
 #include "math/vec3.h"
-struct Line2D;
 /**
  * \brief The namespace of the EasyImage class
  */
@@ -32,46 +29,32 @@ namespace img
 	/**
 	 * \brief This class represents the color of a pixel in an img::EasyImage object
 	 */
-	class Color
+	struct Color
 	{
 		//a safety warning to all of you: Do *NOT* rearrange the 'color components' in this class
 		//easyimage expects these three fields to be the *first* fields in the class AND expects
 		//them to be in *this* order
 		//if you alter the arrangement, the generated BMP files will contain garbage
-		public:
-			/**
-			 * \brief The intensity of the blue color component
-			 */
-			uint8_t blue;
 
-			/**
-			 * \brief The intensity of the green color component
-			 */
-			uint8_t green;
+		/**
+		* \brief The intensity of the blue color component
+		*/
+		uint8_t blue;
+		/**
+		* \brief The intensity of the green color component
+		*/
+		uint8_t green;
+		/**
+		* \brief The intensity of the red color component
+		 */
+		uint8_t red;
 
-			/**
-			 * \brief The intensity of the red color component
-			 */
-			uint8_t red;
-
-			/**
-			 * \brief Default Constructor
-			 */
-			Color();
-
-			/**
-			 * \brief Constructs a Color with the given intensities
-			 *
-			 * \param r	The red color component
-			 * \param g	The green color component
-			 * \param b	The blue color component
-			 *
-			 */
-			Color(uint8_t r, uint8_t g, uint8_t b);
-			/**
-			 * Destructor
-			 */
-			~Color();
+		/**
+		* \brief Constructors / Destructors
+		*/
+		Color() : blue(0), green(0), red(0) {}
+		Color(uint8_t r, uint8_t g, uint8_t b) : blue(b), green(g), red(r) {}
+		~Color() = default;
 	};
 
 	/**
@@ -141,28 +124,7 @@ namespace img
 			 * \param height	the height of the image
 			 * \param color		(optional) the background color of the image
 			 */
-			EasyImage(double width, double height, const Vec3& color);
-			EasyImage(unsigned int width, unsigned int height, Color color = Color());
-
-
-			/**
-			 * \brief Copy Constructor
-			 *
-			 * \param img		the image to be copied
-			 */
-			EasyImage(EasyImage const& img);
-
-			/**
-			 * \brief Destructor
-			 */
-			virtual ~EasyImage();
-
-			/**
-			 * \brief Assignment operator. Allows an easyImage to be assigned to another easyImage
-			 *
-			 * \param img	The image to be assigned to this image
-			 */
-			EasyImage& operator=(EasyImage const& img);
+			EasyImage(double width, double height, const Vec3& color = Vec3());
 
 			/**
 			 * \brief Returns the width of the image
@@ -207,24 +169,6 @@ namespace img
 			 * \param color		The color to be assigned to each pixel
 			 */
 			void clear(Color color = Color());
-
-			/**
-			 * \brief Draws a line from pixel (x0,y0) to pixel (x1,y1) in the specified color
-			 *
-			 * \param x0	the x coordinate of the first pixel
-			 * \param y0	the y coordinate of the first pixel
-			 * \param x1	the x coordinate of the second pixel
-			 * \param y1	the y coordinate of the second pixel
-			 * \param color	the color of the line
-			 *
-			 * These assertions apply:
-			 *	assert(x0 < getWidth())
-			 * 	assert(y0 < getHeight())
-			 * 	assert(x1 < getWidth())
-			 * 	assert(y1 < getHeight())
-			 */
-            void draw_line(const Vec2& p1, const Vec2& p2, const Vec3& color);
-			void draw_line(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, Color color);
 
 		private:
 			friend std::istream& operator>>(std::istream& in, EasyImage & image);

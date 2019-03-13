@@ -109,13 +109,6 @@ namespace
 	}
 
 }
-img::Color::Color() :
-	blue(0), green(0), red(0)
-{
-}
-img::Color::Color(uint8_t r, uint8_t g, uint8_t b) : blue(b), green(g), red(r){}
-
-img::Color::~Color(){}
 
 img::UnsupportedFileTypeException::UnsupportedFileTypeException(std::string const& msg) :
 	message(msg)
@@ -139,38 +132,14 @@ const char* img::UnsupportedFileTypeException::what() const throw ()
 	return message.c_str();
 }
 
-img::EasyImage::EasyImage() :
-	width(0), height(0), bitmap()
-{
-}
+img::EasyImage::EasyImage() : width(0), height(0), bitmap() {}
 
-img::EasyImage::EasyImage(double _width, double _height, const Vec3& color) :
-EasyImage(static_cast<uint32_t>(std::round(_width)), static_cast<uint32_t>(std::round(_height)),
-		{ static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) })
+img::EasyImage::EasyImage(double _width, double _height, const Vec3& color)
 {
-}
-
-img::EasyImage::EasyImage(unsigned int _width, unsigned int _height, Color color) :
-	width(_width), height(_height), bitmap(width * height, color)
-{
-}
-
-img::EasyImage::EasyImage(EasyImage const& img) :
-	width(img.width), height(img.height), bitmap(img.bitmap)
-{
-}
-
-img::EasyImage::~EasyImage()
-{
-	bitmap.clear();
-}
-
-img::EasyImage& img::EasyImage::operator=(img::EasyImage const& img)
-{
-	width = img.width;
-	height = img.height;
-	bitmap.assign(img.bitmap.begin(),img.bitmap.end());
-	return (*this);
+    width  = static_cast<uint32_t>(std::round(_width ));
+    height = static_cast<uint32_t>(std::round(_height));
+    Color background = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
+    bitmap = std::vector<Color>(width*height, background);
 }
 
 unsigned int img::EasyImage::get_width() const
@@ -185,83 +154,23 @@ unsigned int img::EasyImage::get_height() const
 
 void img::EasyImage::clear(Color color)
 {
-	for (std::vector<Color>::iterator i = bitmap.begin(); i != bitmap.end(); i++)
-	{
-		*i = color;
-	}
+	for(auto& pixel : bitmap) pixel = color;
 }
 
 img::Color& img::EasyImage::operator()(unsigned int x, unsigned int y)
 {
 	assert(x < this->width);
 	assert(y < this->height);
-	return bitmap.at(x * height + y);
+	return bitmap[x * height + y];
 }
 
 img::Color const& img::EasyImage::operator()(unsigned int x, unsigned int y) const
 {
 	assert(x < this->width);
 	assert(y < this->height);
-	return bitmap.at(x * height + y);
+	return bitmap[x * height + y];
 }
 
-void img::EasyImage::draw_line(const Vec2& p1, const Vec2& p2, const Vec3& color)
-{
-    draw_line(static_cast<uint32_t>(std::round(p1[0])), static_cast<uint32_t>(std::round(p1[1])), static_cast<uint32_t>(std::round(p2[0])), static_cast<uint32_t>(std::round(p2[1])),
-    		{static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99)});
-}
-void img::EasyImage::draw_line(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, Color color)
-{
-	assert(x0 < this->width && y0 < this->height);
-	assert(x1 < this->width && y1 < this->height);
-	if (x0 == x1)
-	{
-		//special case for x0 == x1
-		for (unsigned int i = std::min(y0, y1); i <= std::max(y0, y1); i++)
-		{
-			(*this)(x0, i) = color;
-		}
-	}
-	else if (y0 == y1)
-	{
-		//special case for y0 == y1
-		for (unsigned int i = std::min(x0, x1); i <= std::max(x0, x1); i++)
-		{
-			(*this)(i, y0) = color;
-		}
-	}
-	else
-	{
-		if (x0 > x1)
-		{
-			//flip points if x1>x0: we want x0 to have the lowest value
-			std::swap(x0, x1);
-			std::swap(y0, y1);
-		}
-		double m = ((double) y1 - (double) y0) / ((double) x1 - (double) x0);
-		if (-1.0 <= m && m <= 1.0)
-		{
-			for (unsigned int i = 0; i <= (x1 - x0); i++)
-			{
-				(*this)(x0 + i, (unsigned int) round(y0 + m * i)) = color;
-			}
-		}
-		else if (m > 1.0)
-		{
-			for (unsigned int i = 0; i <= (y1 - y0); i++)
-			{
-				(*this)((unsigned int) round(x0 + (i / m)), y0 + i) = color;
-			}
-		}
-		else if (m < -1.0)
-		{
-			for (unsigned int i = 0; i <= (y0 - y1); i++)
-			{
-				(*this)((unsigned int) round(x0 - (i / m)), y0 - i) = color;
-			}
-		}
-	}
-}
 std::ostream& img::operator<<(std::ostream& out, EasyImage const& image)
 {
 

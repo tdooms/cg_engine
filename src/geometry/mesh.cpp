@@ -57,6 +57,11 @@ Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
         uint32_t m = static_cast<uint32_t>((int)section["m"]);
         result = Mesh::createTorus(color, R, r, n, m);
     }
+    else if(type == "Sierpinski Sphere")
+    {
+        uint32_t depth = static_cast<uint32_t>((int)section["n"]);
+        result = Mesh::createSierpinskiSphere(color, depth);
+    }
     else if(type == "3DLSystem")
     {
         const std::string path = section["inputfile"];
@@ -193,22 +198,6 @@ Mesh Mesh::createSphere(const Color& color, const uint32_t depth)
 
     return icosahedron;
 }
-void Mesh::subdivTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, const uint32_t face)
-{
-    const auto start = static_cast<uint32_t>(vertices.size());
-    const Vec3 p0 = vertices[ indices[face][0] ];
-    const Vec3 p1 = vertices[ indices[face][1] ];
-    const Vec3 p2 = vertices[ indices[face][2] ];
-
-    vertices.push_back((p0+p1)/2.0);
-    vertices.push_back((p1+p2)/2.0);
-    vertices.push_back((p2+p0)/2.0);
-
-    indices.push_back({indices[face][0], start, start+2});
-    indices.push_back({start, indices[face][1], start+1});
-    indices.push_back({start+2, start+1, indices[face][2]});
-    indices[face] = {start, start+1, start+2};
-}
 
 Mesh Mesh::createTorus(const Color& color, const double R, const double r, const uint32_t n, const uint32_t m)
 {
@@ -230,4 +219,55 @@ Mesh Mesh::createTorus(const Color& color, const double R, const double r, const
             indices[i*m + j] = {i*m+j, ((i+1)%n)*m + j, ((i+1)%n) * m + ((j+1)%m), i*m + ((j+1)%m)};
 
     return {vertices, indices, color};
+}
+
+Mesh Mesh::createSierpinskiSphere(const Color &color, uint32_t depth)
+{
+    Mesh icosahedron = createIcosahedron(color);
+    icosahedron.vertices.reserve(12*(uint32_t)pow(2, depth));   // every step doubles the vertices
+    icosahedron.indices.reserve( 20*(uint32_t)pow(2, depth));   // every step quadruples the faces
+
+    for(uint32_t i = 0; i < depth; i++)
+    {
+        const auto size = static_cast<uint32_t>(icosahedron.indices.size());
+        for(uint32_t j = 0; j < size; j++) subdivSierpinskiTriangle(icosahedron.vertices, icosahedron.indices, j);
+    }
+    for(Vec3& vertex : icosahedron.vertices) vertex /= norm(vertex);
+
+    return icosahedron;
+}
+
+
+
+void Mesh::subdivTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, const uint32_t face)
+{
+    const auto start = static_cast<uint32_t>(vertices.size());
+    const Vec3 p0 = vertices[ indices[face][0] ];
+    const Vec3 p1 = vertices[ indices[face][1] ];
+    const Vec3 p2 = vertices[ indices[face][2] ];
+
+    vertices.push_back((p0+p1)/2.0);
+    vertices.push_back((p1+p2)/2.0);
+    vertices.push_back((p2+p0)/2.0);
+
+    indices.push_back({indices[face][0], start, start+2});
+    indices.push_back({start, indices[face][1], start+1});
+    indices.push_back({start+2, start+1, indices[face][2]});
+    indices[face] = {start, start+1, start+2};
+}
+
+void Mesh::subdivSierpinskiTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face)
+{
+    const auto start = static_cast<uint32_t>(vertices.size());
+    const Vec3 p0 = vertices[ indices[face][0] ];
+    const Vec3 p1 = vertices[ indices[face][1] ];
+    const Vec3 p2 = vertices[ indices[face][2] ];
+
+    vertices.push_back((p0+p1)/2.0);
+    vertices.push_back((p1+p2)/2.0);
+    vertices.push_back((p2+p0)/2.0);
+
+    indices.push_back({indices[face][0], start, start+2});
+    indices.push_back({start, indices[face][1], start+1});
+    indices[face] = {start+2, start+1, indices[face][2]};
 }

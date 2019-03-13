@@ -13,7 +13,7 @@ LSystem2DRenderer::LSystem2DRenderer(const LParser::LSystem2D& info, const Color
 
 img::EasyImage LSystem2DRenderer::generateImage(const Color& background, int size) const
 {
-    return drawLines(lines, background, size);
+    return drawLines(lines, background, size, false);
 }
 
 void LSystem2DRenderer::recursiveEval(char symbol, uint32_t depth)

@@ -42,8 +42,10 @@ struct Mesh
     static Mesh createCone(const Color& color, double height, uint32_t num);
     static Mesh createSphere(const Color& color, uint32_t depth);
     static Mesh createTorus(const Color& color, double R, double r, uint32_t n, uint32_t m);
+    static Mesh createSierpinskiSphere(const Color& color, uint32_t depth);
 
     static void subdivTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
+    static void subdivSierpinskiTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
 
     std::vector<Vec3> vertices;
     std::vector<std::vector<uint32_t>> indices;
