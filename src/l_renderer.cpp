@@ -18,10 +18,10 @@ img::EasyImage LSystem2DRenderer::generateImage(const Color& background, int siz
 
 void LSystem2DRenderer::recursiveEval(char symbol, uint32_t depth)
 {
-    if      (symbol == '-') pos.top().second -= angle;
-    else if (symbol == '+') pos.top().second += angle;
-    else if (symbol == '(') pos.push(pos.top());
-    else if (symbol == ')') pos.pop();
+    if      (symbol == '-'){ pos.top().second -= angle; hasChanged = true; }
+    else if (symbol == '+'){ pos.top().second += angle; hasChanged = true; }
+    else if (symbol == '('){ pos.push(pos.top());       hasChanged = true; }
+    else if (symbol == ')'){ pos.pop();                 hasChanged = true; }
     else if (depth == maxDepth && exists(symbol)) addLine();
     else if (exists(symbol)) for(char c : info.get_replacement(symbol)) recursiveEval(c, depth+1);
     else std::cerr << "unknown symbol\n";
@@ -36,10 +36,15 @@ void LSystem2DRenderer::addLine()
 {
     double newX = pos.top().first[0] + std::cos(pos.top().second);
     double newY = pos.top().first[1] + std::sin(pos.top().second);
-    lines.emplace_front(pos.top().first, Vec2{newX, newY}, lineColor);
+
+    if(!hasChanged) lines.front().p2 = Vec2{newX, newY};
+    else lines.emplace_front(pos.top().first, Vec2{newX, newY}, lineColor);
+
     pos.top().first = {newX, newY};
+    hasChanged = false;
 }
 
+//============================================================================//
 
 LSystem3DRenderer::LSystem3DRenderer(const LParser::LSystem3D& info, const Color& lineColor) : lineColor(lineColor), info(info)
 {

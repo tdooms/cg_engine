@@ -32,6 +32,8 @@ private:
     std::forward_list<Line2D> lines;
     Color lineColor;
 
+    bool hasChanged = true;
+
     const LParser::LSystem2D& info;
 };
 
