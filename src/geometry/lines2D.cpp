@@ -9,26 +9,27 @@
 
 #include "lines2D.h"
 #include <algorithm>
-#include <set>
+#include <unordered_set>
 #include <cmath>
 #include <cassert>
 
 struct Index
 {
     Index(const uint32_t p1, const uint32_t p2) : p1(p1), p2(p2) {}
+    friend bool operator==(const Index& a, const Index& b);
+
     uint32_t p1, p2;
 };
-bool operator<(const Index& a, const Index& b)
+bool operator==(const Index& a, const Index& b)
 {
+    return a.p1 == b.p2 and a.p2 == b.p1;       // because every face in ccw we know the indices will be inversed.
+}
 
-    if((a.p1 > a.p2) ^ (b.p1 > b.p2))   return a.p2 < b.p1 || (a.p2 >= b.p1 && a.p1 < b.p2);
-    else                                return a.p1 < b.p1 || (a.p1 >= b.p1 && a.p2 < b.p2);
-}
-bool operator>(const Index& a, const Index& b)
+template<>
+struct std::hash<Index>
 {
-    if((a.p1 > a.p2) ^ (b.p1 > b.p2))   return a.p2 > b.p1 || (a.p2 <= b.p1 && a.p1 > b.p2);
-    else                                return a.p1 > b.p1 || (a.p1 <= b.p1 && a.p2 > b.p2);
-}
+    size_t operator()(const Index& a) const noexcept { return ((a.p1 << 16) + a.p2) + (((a.p2 << 16) + a.p1)); }
+};
 
 
 void drawLine(img::EasyImage& image, const Vec3& p1, const Vec3& p2, const Vec3& color)
@@ -152,8 +153,8 @@ img::EasyImage drawFigures(std::vector<Mesh>& figures, const Color& background, 
             point[0] *= div;
             point[1] *= div;
         }
-
-        std::set<Index> set;
+        // size of the hashmap = amount of lines / 2 because half of the lines will be deleted
+        std::unordered_set<Index> set(figures[i].indices.size() * figures[i].indices[1].size() / 2);
         for (const auto& face : figures[i].indices)
         {
             if(face.size() == 2) set.emplace(face[0], face[1]);
@@ -204,8 +205,6 @@ img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& ba
     {
         for(const Line2D& line : lines) drawLine(image, line.p1.xy()*scale + Vec2{dx, dy}, line.p2.xy()*scale + Vec2{dx, dy}, line.color);
     }
-
-
     return image;
 }
 
