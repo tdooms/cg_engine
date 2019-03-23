@@ -87,8 +87,8 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     assert(x0 < image.get_width() && y0 < image.get_height());
     assert(x1 < image.get_width() && y1 < image.get_height());
 
-    const double pixels = std::max(std::max(x1, x0) - std::min(x1,x0), std::max(y1, y0) - std::min(y1,y0));
-    const double step = (z1 - z0) / (z0 * z1 * pixels);     // simplification of (1 / z0 - 1/ z1) * (1/pixels)
+    const double pixels = std::max(std::max(x1, x0) - std::min(x1,x0), std::max(y1, y0) - std::min(y1,y0)) + 1;
+    const double step = (z1-z0)/pixels;
     double depthIter = z0;
 
     if (x0 == x1)

@@ -26,7 +26,7 @@ ZBuffer::ZBuffer(double _width, double _height)
 bool ZBuffer::operator()(uint32_t x, uint32_t y, double depth)
 {
     const uint32_t index = x * height + y;
-    if(depth > buffer[index])
+    if(depth >= buffer[index])
     {
         buffer[index] = depth;
         return true;
