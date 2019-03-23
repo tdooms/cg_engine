@@ -186,8 +186,8 @@ Mesh Mesh::createCone(const Color& color, const double height, const uint32_t nu
 Mesh Mesh::createSphere(const Color& color, const uint32_t depth)
 {
     Mesh icosahedron = createIcosahedron(color);
-    icosahedron.vertices.reserve(12*(uint32_t)pow(2, depth));   // every step doubles the vertices
-    icosahedron.indices.reserve( 20*(uint32_t)pow(3, depth));   // every step quadruples the faces
+    icosahedron.vertices.reserve(24*(uint32_t)pow(4, depth));   // every step quadruples the vertices
+    icosahedron.indices.reserve( 20*(uint32_t)pow(4, depth));   // every step quadruples the faces
 
     for(uint32_t i = 0; i < depth; i++)
     {
@@ -225,7 +225,7 @@ Mesh Mesh::createSierpinskiSphere(const Color &color, uint32_t depth)
 {
     Mesh icosahedron = createIcosahedron(color);
     icosahedron.vertices.reserve(12*(uint32_t)pow(2, depth));   // every step doubles the vertices
-    icosahedron.indices.reserve( 20*(uint32_t)pow(2, depth));   // every step quadruples the faces
+    icosahedron.indices.reserve( 20*(uint32_t)pow(2, depth));   // every step doubles the faces
 
     for(uint32_t i = 0; i < depth; i++)
     {

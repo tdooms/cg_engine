@@ -4,9 +4,9 @@ Thomas Dooms - s0181389 - 1Ba Informatica
 
 # Versie 1 (l_systemen)
 
-l_renderer  : classe die alle generatie en rendering van l-systmeen omvat
-primitives  : simpele structs/functies voor eenvoudige zaken zoals Line2D
-l_parser    : extra classe ReplacementRule om gemakkelijker stochastische l-systemen te parsen
+ - l_renderer  : classe die alle generatie en rendering van l-systmeen omvat
+ - primitives  : simpele structs/functies voor eenvoudige zaken zoals Line2D
+ - l_parser    : extra classe ReplacementRule om gemakkelijker stochastische l-systemen te parsen
 
 voor stochastische l-systemen is de syntax als volgt:
 
@@ -47,3 +47,17 @@ drawFigures haalt ook dubbele lijnen eruit door de indices door een set te duwen
 Hierdoor worden er 2 keer minder lijnen gemaakt/getekend, spijtig genoeg gebruikt de rood-zwart boom van c++ veel memory.
 Later ga ik eens kijken naar std::unordered_set voor hogere efficientie.
 
+# Versie 4 (Z-Buffered lines)
+
+zBuffer     : klasse die een bitmap is met wat overloaded operatoren
+
+Ik heb sinds de laatste keer mijn memory gebruik zwaar verminderd,en mijn snelheid verbeterd:
+ - unordered_set ipv set: 30% minder memory en 2-5x sneller O(n*logn) -> O(n).
+ - foutje in mijn sphere vertex size voorspelling (er zijn nu geen resizes meer): 10% minder memory 
+ 
+het totale gealloceerde geheugen met valgrind voor alle testen tesamen test is nu 817 mb, ipv 1150 mb
+    
+Verdere optimisaties die kunnen gebeuren:
+ - Elke opdeling van een sphere dupliceerd vertices. Dit lijkt me wel geen triviaal op te lossen probleem :(
+ 
+ 
