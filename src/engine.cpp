@@ -11,6 +11,21 @@
 #include <stdexcept>
 #include <string>
 
+std::vector<Mesh> parseFigures(const ini::Configuration& configuration)
+{
+    const std::vector<double> eyePos = configuration["General"]["eye"];
+    const Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
+
+    const uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
+
+    std::vector<Mesh> figures(numFigures);
+    for(uint32_t i = 0; i < numFigures; i++)
+    {
+        figures[i] =  Mesh::parseFigure(configuration["Figure" + std::to_string(i)], eyeSpace) ;
+    }
+    return figures;
+}
+
 img::EasyImage generate_L2D(const ini::Configuration& configuration)
 {
     const int         size = configuration["General"]["size"];
@@ -35,18 +50,17 @@ img::EasyImage generate_wireframe(const ini::Configuration& configuration, bool 
     const int size = configuration["General"]["size"];
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
-    const std::vector<double> eyePos = configuration["General"]["eye"];
-    const Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
-
-    const uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
-
-    std::vector<Mesh> figures(numFigures);
-    for(uint32_t i = 0; i < numFigures; i++)
-    {
-        figures[i] =  Mesh::parseFigure(configuration["Figure" + std::to_string(i)], eyeSpace) ;
-    }
-
+    auto figures = parseFigures(configuration);
     return drawFigures(figures, background, size, 1, depthBuffered);
+}
+
+img::EasyImage generate_Mesh(const ini::Configuration& configuration)
+{
+    const int size = configuration["General"]["size"];
+    const std::vector<double> background = configuration["General"]["backgroundcolor"];
+
+    auto figures = parseFigures(configuration);
+    return drawTriangulatedMeshes(figures, background, size);
 }
 
 img::EasyImage generate_image(const ini::Configuration& configuration)
@@ -56,6 +70,7 @@ img::EasyImage generate_image(const ini::Configuration& configuration)
     if     (type == "2DLSystem") return generate_L2D(configuration);
     else if(type == "Wireframe") return generate_wireframe(configuration, false);
     else if(type == "ZBufferedWireframe") return generate_wireframe(configuration, true);
+    else if(type == "ZBuffering") return generate_Mesh(configuration);
     else std::cerr << "unknown type\n";
 
     return img::EasyImage();
