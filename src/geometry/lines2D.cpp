@@ -87,22 +87,25 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     assert(x0 < image.get_width() && y0 < image.get_height());
     assert(x1 < image.get_width() && y1 < image.get_height());
 
-    double pixels = std::max(std::max(x1, x0) - std::min(x1,x0), std::max(y1, y0) - std::min(y1,y0)) + 1;
-    double step = (z1-z0)/pixels;
+    double step;
     double depthIter = z0;
 
     if (x0 == x1)
     {
+        step = (z1-z0) / (std::max(y0, y1) - std::min(y0, y1));
         for(uint32_t i = std::min(y0, y1); i <= std::max(y0, y1); i++)
         {
-            if( buffer(x0, i, depthIter += step) ) image(x0, i) = rgb;
+            if( buffer(x0, i, depthIter) ) image(x0, i) = rgb;
+            depthIter += step;
         }
     }
     else if (y0 == y1)
     {
+        step = (z1-z0) / (std::max(x0, x1) - std::min(x0, x1));
         for(uint32_t i = std::min(x0, x1); i <= std::max(x0, x1); i++)
         {
-            if( buffer(i, y0, depthIter += step) ) image(i, y0) = rgb;
+            if( buffer(i, y0, depthIter) ) image(i, y0) = rgb;
+            depthIter += step;
         }
     }
     else
@@ -113,38 +116,41 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
             std::swap(y0, y1);
             std::swap(z0, z1);
             depthIter = z0;
-
         }
         double m = ((double) y1 - (double) y0) / ((double) x1 - (double) x0);
         if (-1.0 <= m && m <= 1.0)
         {
+            step = (z1-z0)/(x1-x0);
             for (uint32_t i = 0; i <= (x1 - x0); i++)
             {
-                step = (z1-z0)/(x1-x0+1);
                 uint32_t x = x0 + i; uint32_t y = (uint32_t) round(y0 + m * i);
-                if( buffer(x,y, depthIter += step) ) image(x, y) = rgb;
+                if( buffer(x,y, depthIter) ) image(x, y) = rgb;
+                depthIter += step;
             }
         }
         else if (m > 1.0)
         {
+            step = (z1-z0)/(y1-y0);
             for (uint32_t i = 0; i <= (y1 - y0); i++)
             {
-                step = (z1-z0)/(y1-y0+1);
                 uint32_t x = (uint32_t)round(x0 + (i / m)); uint32_t y = y0 + i;
-                if( buffer(x,y, depthIter += step) ) image(x, y) = rgb;
+                if( buffer(x,y, depthIter) ) image(x, y) = rgb;
+                depthIter += step;
             }
         }
         else if (m < -1.0)
         {
+            step = (z1-z0)/(y0-y1);
             for (uint32_t i = 0; i <= (y0 - y1); i++)
             {
-                step = (z1-z0)/(y0-y1+1);
                 uint32_t x = (uint32_t) round(x0 - (i / m)); uint32_t y = y0 - i;
-                if( buffer(x, y, depthIter += step) ) image(x,y) = rgb;
+                if( buffer(x, y, depthIter) ) image(x,y) = rgb;
+                depthIter += step;
             }
         }
     }
-    if(std::abs(depthIter - z1) > 0.0001) std::cerr << "aaaa\n";
+    if(std::abs(depthIter - step - z1) > 0.0001)
+        std::cerr << "aaah\n";
 }
 
 img::EasyImage drawFigures(std::vector<Mesh>& figures, const Color& background, const uint32_t size, double d, bool depthBuffer)
