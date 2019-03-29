@@ -29,7 +29,6 @@ struct Mesh
     Mesh& operator*=(const Mat4& transform);
 
     static Mesh parseFigure(const ini::Section& section, const Mat4& eye);
-
     static Mesh createLineDrawing(const Color& color, const ini::Section& section);
 
     static Mesh createCube(const Color& color);
@@ -46,6 +45,8 @@ struct Mesh
 
     static void subdivTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
     static void subdivSierpinskiTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
+
+    static void triangulate(Mesh& mesh);
 
     std::vector<Vec3> vertices;
     std::vector<std::vector<uint32_t>> indices;
