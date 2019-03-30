@@ -150,38 +150,41 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
 {
     img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
 
-    p1.xy() *= -d/p1[2];
-    p2.xy() *= -d/p2[2];
-    p3.xy() *= -d/p3[2];
-
-    p1.xy() += dxy;
-    p2.xy() += dxy;
-    p3.xy() += dxy;
-
     Vec3 min = p1;
     Vec3 mid = p2;
     Vec3 max = p3;
+
+    min[0] *= -d/min[2]; min[1] *= -d/min[2];
+    mid[0] *= -d/mid[2]; mid[1] *= -d/mid[2];
+    max[0] *= -d/max[2]; max[1] *= -d/max[2];
+
+    min += dxy;
+    mid += dxy;
+    max += dxy;
 
     if(min[1] > mid[1]) std::swap(min, mid);
     if(mid[1] > max[1]) std::swap(mid, max);
     if(min[1] > mid[1]) std::swap(min, mid);
 
-    double stepMinMax = (max[1] - min[1])/(max[0] - min[0]);
-    double stepMinMid = (mid[1] - min[1])/(mid[0] - min[0]);
-    double stepMidMax = (max[1] - mid[1])/(max[0] - mid[0]);
+    double stepMinMax = (max[0] - min[0])/(max[1] - min[1]);
+    double stepMinMid = (mid[0] - min[0])/(mid[1] - min[1]);
+    double stepMidMax = (max[0] - mid[0])/(max[1] - mid[1]);
 
     double minIter = min[0];
     double maxIter = min[0];
 
-    if(dot(min.xy() - p3.xy(), min.xy() - mid.xy()) > 0)
+    Vec2 line1 = max.xy() - min.xy();
+    Vec2 line2 = mid.xy() - min.xy();
+
+    if(line1[0] * line2[1] - line1[1] * line2[0] <= 0)
     {
-        for(auto y = uint32_t(min[1]); y < uint32_t(mid[1]); y++)
+        for(auto y = uint32_t(std::round(min[1])); y < uint32_t(std::round(mid[1])); y++)
         {
             minIter += stepMinMax;
             maxIter += stepMinMid;
             drawXLine(image, y, minIter, maxIter, rgb);
         }
-        for(auto y = uint32_t(mid[1]); y < uint32_t(max[1]); y++)
+        for(auto y = uint32_t(std::round(mid[1])); y < uint32_t(std::round(max[1])); y++)
         {
             minIter += stepMinMax;
             maxIter += stepMidMax;
@@ -190,13 +193,13 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     }
     else
     {
-        for(auto y = uint32_t(min[1]); y < uint32_t(mid[1]); y++)
+        for(auto y = uint32_t(std::round(min[1])); y < uint32_t(std::round(mid[1])); y++)
         {
             minIter += stepMinMid;
             maxIter += stepMinMax;
             drawXLine(image, y, minIter, maxIter, rgb);
         }
-        for(auto y = uint32_t(mid[1]); y < uint32_t(max[1]); y++)
+        for(auto y = uint32_t(std::round(mid[1])); y < uint32_t(std::round(max[1])); y++)
         {
             minIter += stepMidMax;
             maxIter += stepMinMax;
@@ -227,10 +230,10 @@ img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Co
 
     for(const Mesh& figure : figures)
     {
-        Mesh::triangulate(figure);
-        for(auto& triangle : figure.indices)
+        auto newIndices = Mesh::triangulate(figure.indices);
+        for(const auto& triangle : newIndices)
         {
-            drawTriangle(image, buffer, triangle[0], triangle[1], triangle[2], d, {dx, dy}, figure.color);
+            drawTriangle(image, buffer, figure.vertices[triangle[0]], figure.vertices[triangle[1]], figure.vertices[triangle[2]], d, {dx, dy}, figure.color);
         }
     }
     return image;
