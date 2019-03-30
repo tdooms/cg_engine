@@ -150,67 +150,59 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
 {
     img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
 
-    Vec3 min = p1;
-    Vec3 mid = p2;
-    Vec3 max = p3;
+    Vec3 temp1 = p1;
+    Vec3 temp2 = p2;
+    Vec3 temp3 = p3;
 
-    min[0] *= -d/min[2]; min[1] *= -d/min[2];
-    mid[0] *= -d/mid[2]; mid[1] *= -d/mid[2];
-    max[0] *= -d/max[2]; max[1] *= -d/max[2];
+    temp1[0] *= -d/temp1[2]; temp1[1] *= -d/temp1[2];
+    temp2[0] *= -d/temp2[2]; temp2[1] *= -d/temp2[2];
+    temp3[0] *= -d/temp3[2]; temp3[1] *= -d/temp3[2];
 
-    min += dxy;
-    mid += dxy;
-    max += dxy;
+    temp1 += dxy;
+    temp2 += dxy;
+    temp3 += dxy;
 
-    if(min[1] > mid[1]) std::swap(min, mid);
-    if(mid[1] > max[1]) std::swap(mid, max);
-    if(min[1] > mid[1]) std::swap(min, mid);
+    const auto yMax = static_cast<uint32_t>(std::ceil(std::max(std::max(temp1[1], temp2[1]), temp3[1])));
+    const auto yMin = static_cast<uint32_t>(std::ceil(std::min(std::min(temp1[1], temp2[1]), temp3[1])));
 
-    double stepMinMax = (max[0] - min[0])/(max[1] - min[1]);
-    double stepMinMid = (mid[0] - min[0])/(mid[1] - min[1]);
-    double stepMidMax = (max[0] - mid[0])/(max[1] - mid[1]);
+    const double step21 = (temp2[0] - temp1[0]) / (temp2[1] - temp1[1]);
+    const double step32 = (temp3[0] - temp2[0]) / (temp3[1] - temp2[1]);
+    const double step31 = (temp3[0] - temp1[0]) / (temp3[1] - temp1[1]);
 
-    double minIter = min[0];
-    double maxIter = min[0];
+    double xMin;
+    double xMax;
+    double xVal;
 
-    Vec2 line1 = max.xy() - min.xy();
-    Vec2 line2 = mid.xy() - min.xy();
-
-    if(line1[0] * line2[1] - line1[1] * line2[0] <= 0)
+    for(uint32_t y = yMin; y < yMax; y++)
     {
-        for(auto y = uint32_t(std::round(min[1])); y < uint32_t(std::round(mid[1])); y++)
+        xMin =  std::numeric_limits<double>::max();
+        xMax = -std::numeric_limits<double>::max();
+
+        if(temp1[1] != temp2[1] and (y - temp2[1])*(y - temp1[1]) <= 0)
         {
-            minIter += stepMinMax;
-            maxIter += stepMinMid;
-            drawXLine(image, y, minIter, maxIter, rgb);
+            xVal = temp1[0] + step21 * (y - temp1[1]);
+            xMin = std::min(xVal, xMin);
+            xMax = std::max(xVal, xMax);
         }
-        for(auto y = uint32_t(std::round(mid[1])); y < uint32_t(std::round(max[1])); y++)
+        if(temp2[1] != temp3[1] and (y - temp3[1])*(y - temp2[1]) <= 0)
         {
-            minIter += stepMinMax;
-            maxIter += stepMidMax;
-            drawXLine(image, y, minIter, maxIter, rgb);
+            xVal = temp2[0] + step32 * (y - temp2[1]);
+            xMin = std::min(xVal, xMin);
+            xMax = std::max(xVal, xMax);
         }
-    }
-    else
-    {
-        for(auto y = uint32_t(std::round(min[1])); y < uint32_t(std::round(mid[1])); y++)
+        if(temp1[1] != temp3[1] and (y - temp3[1])*(y - temp1[1]) <= 0)
         {
-            minIter += stepMinMid;
-            maxIter += stepMinMax;
-            drawXLine(image, y, minIter, maxIter, rgb);
+            xVal = temp1[0] + step31 * (y - temp1[1]);
+            xMin = std::min(xVal, xMin);
+            xMax = std::max(xVal, xMax);
         }
-        for(auto y = uint32_t(std::round(mid[1])); y < uint32_t(std::round(max[1])); y++)
-        {
-            minIter += stepMidMax;
-            maxIter += stepMinMax;
-            drawXLine(image, y, minIter, maxIter, rgb);
-        }
+        drawXLine(image, y, xMin, xMax, rgb);
     }
 }
 
 void drawXLine(img::EasyImage& image, uint32_t y, double xMin, double xMax, const img::Color& color)
 {
-    for(auto x = (uint32_t)std::round(xMin); x < (uint32_t)std::round(xMax); x++)
+    for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
     {
         image(x,y) = color;
     }
