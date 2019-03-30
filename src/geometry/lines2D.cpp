@@ -242,7 +242,8 @@ std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const d
 
     for(int i = figures.size() - 1; i >= 0; i--)
     {
-        std::vector<Vec3> projectedVertices(figures[i].vertices);
+        std::vector<Vec3> projectedVertices;
+        projectedVertices.reserve(figures[i].vertices.size());
         for (const Vec3& point : figures[i].vertices)
         {
             // apply depth division to x an y coordinates
@@ -266,6 +267,7 @@ std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const d
         }
         for(const auto& index : set) lines.emplace_front(projectedVertices[index.p1], projectedVertices[index.p2], figures[i].color);
     }
+    return lines;
 }
 
 

@@ -35,13 +35,13 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
 std::tuple<double, double, double, double, double> getRanges(const std::forward_list<Line2D>& lines, double size);
 std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d);
 
-void drawTriangle(img::EasyImage& image, ZBuffer& buffer, Vec3& p1, Vec3& p2, Vec3& p3, double d, const Vec2& dxy, const Color& color);
+void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Color& color);
 void drawXLine(img::EasyImage& image, uint32_t y, double xMin, double xMax, const img::Color& color);
 
 
 
-img::EasyImage drawTriangulatedMeshes(std::vector<Mesh>& figures, const Color& background, uint32_t size);
-img::EasyImage drawFigures(std::vector<Mesh>& figures, const Color& background, uint32_t size, double d, bool depthBuffer);
+img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, const uint32_t size);
+img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, uint32_t size, double d, bool depthBuffer);
 img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, int size, bool depthBuffer);
 
 #endif //ENGINE_LINE_H
