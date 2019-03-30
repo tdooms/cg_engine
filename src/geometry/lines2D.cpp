@@ -22,7 +22,7 @@ struct Index
 };
 bool operator==(const Index& a, const Index& b)
 {
-    return a.p1 == b.p2 and a.p2 == b.p1;       // because every face in ccw we know the indices will be inversed.
+    return a.p1 == b.p2 and a.p2 == b.p1;       // because every face is ccw we know the indices will be inversed.
 }
 
 template<>
@@ -146,7 +146,7 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     }
 }
 
-void drawTriangle(img::EasyImage& image, ZBuffer& buffer, Vec3& p1, Vec3& p2, Vec3& p3, double d, const Vec2& dxy, const Color& color)
+void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Color& color)
 {
     img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
 
@@ -158,44 +158,48 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, Vec3& p1, Vec3& p2, Ve
     p2.xy() += dxy;
     p3.xy() += dxy;
 
-    if(p1[1] < p2[1]) std::swap(p1, p2);
-    if(p2[1] < p3[1]) std::swap(p2, p3);
-    if(p1[1] < p2[1]) std::swap(p1, p2);
+    Vec3 min = p1;
+    Vec3 mid = p2;
+    Vec3 max = p3;
 
-    double step13 = (p3[1] - p1[1])/(p3[0] - p1[0]);
-    double step12 = (p2[1] - p1[1])/(p2[0] - p1[0]);
-    double step23 = (p3[1] - p2[1])/(p3[0] - p2[0]);
+    if(min[1] > mid[1]) std::swap(min, mid);
+    if(mid[1] > max[1]) std::swap(mid, max);
+    if(min[1] > mid[1]) std::swap(min, mid);
 
-    double minIter = p1[0];
-    double maxIter = p1[0];
+    double stepMinMax = (max[1] - min[1])/(max[0] - min[0]);
+    double stepMinMid = (mid[1] - min[1])/(mid[0] - min[0]);
+    double stepMidMax = (max[1] - mid[1])/(max[0] - mid[0]);
 
-    if(dot(p1.xy() - p3.xy(), p1.xy() - p2.xy()) > 0)
+    double minIter = min[0];
+    double maxIter = min[0];
+
+    if(dot(min.xy() - p3.xy(), min.xy() - mid.xy()) > 0)
     {
-        for(auto y = uint32_t(p1[1]); y < uint32_t(p2[1]); y++)
+        for(auto y = uint32_t(min[1]); y < uint32_t(mid[1]); y++)
         {
-            minIter += step13;
-            maxIter += step12;
+            minIter += stepMinMax;
+            maxIter += stepMinMid;
             drawXLine(image, y, minIter, maxIter, rgb);
         }
-        for(auto y = uint32_t(p2[1]); y < uint32_t(p3[1]); y++)
+        for(auto y = uint32_t(mid[1]); y < uint32_t(max[1]); y++)
         {
-            minIter += step13;
-            maxIter += step23;
+            minIter += stepMinMax;
+            maxIter += stepMidMax;
             drawXLine(image, y, minIter, maxIter, rgb);
         }
     }
     else
     {
-        for(auto y = uint32_t(p1[1]); y < uint32_t(p2[1]); y++)
+        for(auto y = uint32_t(min[1]); y < uint32_t(mid[1]); y++)
         {
-            minIter += step12;
-            maxIter += step13;
+            minIter += stepMinMid;
+            maxIter += stepMinMax;
             drawXLine(image, y, minIter, maxIter, rgb);
         }
-        for(auto y = uint32_t(p2[1]); y < uint32_t(p3[1]); y++)
+        for(auto y = uint32_t(mid[1]); y < uint32_t(max[1]); y++)
         {
-            minIter += step23;
-            maxIter += step13;
+            minIter += stepMidMax;
+            maxIter += stepMinMax;
             drawXLine(image, y, minIter, maxIter, rgb);
         }
     }
@@ -209,34 +213,45 @@ void drawXLine(img::EasyImage& image, uint32_t y, double xMin, double xMax, cons
     }
 }
 
-img::EasyImage drawTriangulatedMeshes(std::vector<Mesh>& figures, const Color& background, const uint32_t size)
+img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, const uint32_t size)
 {
-    img::EasyImage image(width, height, background);
+    const auto ranges = getRanges(doProjection(figures, 1), size);
+    const double d      = std::get<0>(ranges);
+    const double width  = std::get<1>(ranges);
+    const double height = std::get<2>(ranges);
+    const double dx     = std::get<3>(ranges);
+    const double dy     = std::get<4>(ranges);
 
-    for(Mesh& figure : figures)
+    img::EasyImage image(width, height, background);
+    ZBuffer buffer(width, height);
+
+    for(const Mesh& figure : figures)
     {
         Mesh::triangulate(figure);
         for(auto& triangle : figure.indices)
         {
-            drawTriangle()
+            drawTriangle(image, buffer, triangle[0], triangle[1], triangle[2], d, {dx, dy}, figure.color);
         }
     }
-
+    return image;
 }
 
-
-img::EasyImage drawFigures(std::vector<Mesh>& figures, const Color& background, const uint32_t size, double d, bool depthBuffer)
+std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const double d)
 {
     std::forward_list<Line2D> lines;
 
     for(int i = figures.size() - 1; i >= 0; i--)
     {
-        for (auto& point : figures[i].vertices)
+        std::vector<Vec3> projectedVertices(figures[i].vertices);
+        for (const Vec3& point : figures[i].vertices)
         {
             // apply depth division to x an y coordinates
+            Vec3 temp;
             const double div = -(d/point[2]);
-            point[0] *= div;
-            point[1] *= div;
+            temp[0] = point[0]*div;
+            temp[1] = point[1]*div;
+            temp[2] = point[2];
+            projectedVertices.push_back(temp);
         }
         // size of the hashmap = amount of lines / 2 because half of the lines will be deleted
         std::unordered_set<Index> set(figures[i].indices.size() * figures[i].indices[1].size() / 2);
@@ -249,12 +264,19 @@ img::EasyImage drawFigures(std::vector<Mesh>& figures, const Color& background, 
                 set.emplace(face[face.size() - 1], face[0]);
             }
         }
-        for(const auto& index : set) lines.emplace_front(figures[i].vertices[index.p1], figures[i].vertices[index.p2], figures[i].color);
+        for(const auto& index : set) lines.emplace_front(projectedVertices[index.p1], projectedVertices[index.p2], figures[i].color);
     }
+}
+
+
+img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, const uint32_t size, const double d, const bool depthBuffer)
+{
+    auto lines = doProjection(figures, d);
     return drawLines(lines, background, size, depthBuffer);
 }
 
-img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, const int size, bool depthBuffer)
+
+std::tuple<double, double, double, double, double> getRanges(const std::forward_list<Line2D>& lines, const double size)
 {
     const auto x0 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p1[0] < b.p1[0]; });
     const auto x1 = std::minmax_element(begin(lines), end(lines), [](const Line2D& a, const Line2D& b){ return a.p2[0] < b.p2[0]; });
@@ -266,15 +288,27 @@ img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& ba
     const double yMax = std::max((*y0.second).p1[1], (*y1.second).p2[1]);
     const double yMin = std::min((*y0.first ).p1[1], (*y1.first ).p2[1]);
 
-    double xRange = xMax - xMin;
-    double yRange = yMax - yMin;
+    const double xRange = xMax - xMin;
+    const double yRange = yMax - yMin;
 
-    double width  = size * xRange / std::max(xRange, yRange);
-    double height = size * yRange / std::max(xRange, yRange);
-    double scale  = 0.95 * width  / xRange;
+    const double width  = size * xRange / std::max(xRange, yRange);
+    const double height = size * yRange / std::max(xRange, yRange);
+    const double scale  = 0.95 * width  / xRange;
 
-    double dx = (width  - scale * (xMin+xMax)) / 2.0;
-    double dy = (height - scale * (yMin+yMax)) / 2.0;
+    const double dx = (width  - scale * (xMax + xMin)) / 2.0;
+    const double dy = (height - scale * (yMax + yMin)) / 2.0;
+
+    return {scale, width, height, dx, dy};
+}
+
+img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, const int size, const bool depthBuffer)
+{
+    const auto ranges   = getRanges(lines, size);
+    const double scale  = std::get<0>(ranges);
+    const double width  = std::get<1>(ranges);
+    const double height = std::get<2>(ranges);
+    const double dx     = std::get<3>(ranges);
+    const double dy     = std::get<4>(ranges);
 
     img::EasyImage image(width, height, background);
 

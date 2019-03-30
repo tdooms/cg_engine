@@ -3,7 +3,6 @@
 #include "l_parser.h"
 #include "l_renderer.h"
 #include "math/mat4.h"
-
 #include "geometry/mesh.h"
 
 #include <fstream>

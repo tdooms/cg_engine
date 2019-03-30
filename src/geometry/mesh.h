@@ -46,7 +46,7 @@ struct Mesh
     static void subdivTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
     static void subdivSierpinskiTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
 
-    static void triangulate(Mesh& mesh);
+    static Mesh triangulate(const Mesh& mesh);
 
     std::vector<Vec3> vertices;
     std::vector<std::vector<uint32_t>> indices;

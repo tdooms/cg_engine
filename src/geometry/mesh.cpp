@@ -272,19 +272,21 @@ void Mesh::subdivSierpinskiTriangle(std::vector<Vec3>& vertices, std::vector<std
     indices[face] = {start+2, start+1, indices[face][2]};
 }
 
-void Mesh::triangulate(Mesh& mesh)
+Mesh Mesh::triangulate(const Mesh& mesh)
 {
     uint32_t estimate = (mesh.indices[0].size() - 3) * mesh.indices.size();
-    mesh.indices.reserve(estimate);
+
+    std::vector<std::vector<uint32_t>> newIndices(estimate);
 
     for(auto& face : mesh.indices)
     {
         if(face.size() < 4) continue;
         for(uint32_t i = 1; i < face.size() - 3; i++)
         {
-            mesh.indices.push_back({face[0], face[i-1], face[i]});
+            newIndices.push_back({face[0], face[i-1], face[i]});
         }
-        mesh.indices.push_back({face[0], face[face.size()-2], face.back()});
+        newIndices.push_back({face[0], face[face.size()-2], face.back()});
     }
-    mesh.indices.shrink_to_fit();
+    newIndices.shrink_to_fit();
+    return {mesh.vertices, newIndices, mesh.color};
 }
