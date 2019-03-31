@@ -74,7 +74,7 @@ void drawLine(img::EasyImage& image, const Vec3& p1, const Vec3& p2, const Color
     }
 }
 
-void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Color& color)
+void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& color)
 {
     img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
     auto x0 = static_cast<uint32_t>(std::round(p1[0]));
@@ -87,22 +87,28 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     assert(x0 < image.get_width() && y0 < image.get_height());
     assert(x1 < image.get_width() && y1 < image.get_height());
 
-    double step = (z1 - z0) / (std::max(std::abs(int(x1-x0)), std::abs(int(y1-y0))));
-    double iter = z0;
+    double step;
+    double iter;
 
     if (x0 == x1)
     {
+        iter = z0;
+        step = (z1-z0)/(std::max(y0, y1) - std::min(y0, y1));
+
         for(uint32_t i = std::min(y0, y1); i <= std::max(y0, y1); i++)
         {
-            if( buffer(x0, i, iter)) image(x0, i) = rgb;
+            if( buffer(x0, i, 1.0/iter)) image(x0, i) = rgb;
             iter += step;
         }
     }
     else if (y0 == y1)
     {
+        iter = z0;
+        step = (z1-z0)/(std::max(x0, x1) - std::min(x0, x1));
+
         for(uint32_t i = std::min(x0, x1); i <= std::max(x0, x1); i++)
         {
-            if( buffer(i, y0, iter )) image(i, y0) = rgb;
+            if( buffer(i, y0, 1.0/iter )) image(i, y0) = rgb;
             iter += step;
         }
     }
@@ -113,34 +119,42 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
             std::swap(x0, x1);
             std::swap(y0, y1);
             std::swap(z0, z1);
-            iter = z0;
         }
         double m = ((double) y1 - (double) y0) / ((double) x1 - (double) x0);
         if (-1.0 <= m && m <= 1.0)
         {
+            iter = z0;
+            step = (z1-z0)/(x1-x0);
+
             for (uint32_t i = 0; i <= (x1 - x0); i++)
             {
                 uint32_t x = x0 + i; uint32_t y = (uint32_t) round(y0 + m * i);
-                if( buffer(x, y, iter) ) image(x, y) = rgb;
-                iter -= step;
+                if( buffer(x, y, 1.0/iter) ) image(x, y) = rgb;
+                iter += step;
             }
         }
         else if (m > 1.0)
         {
+            iter = z0;
+            step = (z1-z0)/(y1-y0);
+
             for (uint32_t i = 0; i <= (y1 - y0); i++)
             {
                 uint32_t x = (uint32_t)round(x0 + (i / m)); uint32_t y = y0 + i;
-                if( buffer(x, y, iter )) image(x, y) = rgb;
-                iter -= step;
+                if( buffer(x, y, 1.0/iter )) image(x, y) = rgb;
+                iter += step;
             }
         }
         else if (m < -1.0)
         {
+            iter = z0;
+            step = (z1-z0)/(y0-y1);
+
             for (uint32_t i = 0; i <= (y0 - y1); i++)
             {
                 uint32_t x = (uint32_t) round(x0 - (i / m)); uint32_t y = y0 - i;
-                if( buffer(x, y, iter) ) image(x,y) = rgb;
-                iter -= step;
+                if( buffer(x, y, 1.0/iter) ) image(x,y) = rgb;
+                iter += step;
             }
         }
     }
@@ -164,6 +178,15 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
 
     const auto yMax = static_cast<uint32_t>(std::ceil(std::max(std::max(temp1[1], temp2[1]), temp3[1])));
     const auto yMin = static_cast<uint32_t>(std::ceil(std::min(std::min(temp1[1], temp2[1]), temp3[1])));
+
+    const Vec3 u = temp2 - temp1;
+    const Vec3 v = temp3 - temp1;
+    const Vec3 w = cross(u,v);
+    const Vec3 g = (temp1 + temp2 + temp3) / 3.0;
+
+    const double k = dot(temp1, w);
+    const double dzdx = w[0] / (-d * k);
+    const double dzdy = w[1] / (-d * k);
 
     const double step21 = (temp2[0] - temp1[0]) / (temp2[1] - temp1[1]);
     const double step32 = (temp3[0] - temp2[0]) / (temp3[1] - temp2[1]);
@@ -196,15 +219,11 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
             xMin = std::min(xVal, xMin);
             xMax = std::max(xVal, xMax);
         }
-        drawXLine(image, y, xMin, xMax, rgb);
-    }
-}
-
-void drawXLine(img::EasyImage& image, uint32_t y, double xMin, double xMax, const img::Color& color)
-{
-    for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
-    {
-        image(x,y) = color;
+        for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
+        {
+            double depth = 1.0001 / g[2] + (x - g[0])*dzdx + (y - g[1])*dzdy;
+            if( buffer(x, y, depth) ) image(x,y) = rgb;
+        }
     }
 }
 

@@ -36,7 +36,6 @@ std::tuple<double, double, double, double, double> getRanges(const std::forward_
 std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d);
 
 void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Color& color);
-void drawXLine(img::EasyImage& image, uint32_t y, double xMin, double xMax, const img::Color& color);
 
 
 

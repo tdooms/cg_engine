@@ -158,9 +158,13 @@ Mesh Mesh::createCylinder(const Color& color, const double height, const uint32_
         vertices[i    ] = { cos(alpha), sin(alpha), 0};
         vertices[num+i] = { cos(alpha), sin(alpha), height};
     }
-    std::vector<std::vector<uint32_t>> indices(num);
+    std::vector<std::vector<uint32_t>> indices(num+2);
     for(uint32_t i = 0; i < num-1; i++) indices[i] = {i, i+1, num+i+1, num+i};
     indices[num-1] = {num-1, 0, num, 2*num-1};
+
+    indices[num].resize(num);
+    std::generate(begin(indices[num]), end(indices[num]), [n = num-1] () mutable { return n--; });
+    indices[num+1] = indices[num];
 
     return {vertices, indices, color};
 }
@@ -178,7 +182,7 @@ Mesh Mesh::createCone(const Color& color, const double height, const uint32_t nu
     for(uint32_t i = 0; i < num-1; i++) indices[i] = {i, i+1, num};
     indices[num-1] = {num-1, 0, num};
 
-    indices[num  ].resize(num);
+    indices[num].resize(num);
     std::generate(begin(indices[num]), end(indices[num]), [n = num-1] () mutable { return n--; });
 
     return {vertices, indices, color};
@@ -282,8 +286,6 @@ std::vector<std::vector<uint32_t>> Mesh::triangulate(const std::vector<std::vect
 
     for(auto& face : indices)
     {
-        if(face.size() > 5)
-            int a = 0;
         if(face.size() == 3)
         {
             newIndices.push_back({face[0], face[1], face[2]});
