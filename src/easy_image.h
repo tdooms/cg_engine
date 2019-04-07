@@ -151,6 +151,8 @@ namespace img
 			 */
 			Color& operator()(unsigned int x, unsigned int y);
 
+			Color& operator()(uint32_t index);
+
 			/**
 			 * \brief Function operator. This operator returns a const reference to a particular pixel of the image.
 			 *

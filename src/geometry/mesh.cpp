@@ -74,7 +74,56 @@ Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
         LSystem3DRenderer renderer = {l_system, color};
         result = renderer.generateMesh();
     }
-    else throw std::runtime_error("unrecognized type");
+    else if(type == "BuckyBall")
+    {
+        result = Mesh::createBuckyBall(color);
+    }
+    else if(type == "FractalCube")
+    {
+        double scale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(Mesh::createCube(color), depth, 1.0/scale);
+    }
+    else if(type == "FractalDodecahedron")
+    {
+        double scale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(Mesh::createDodecahedron(color), depth, 1.0/scale);
+    }
+    else if(type == "FractalIcosahedron")
+    {
+        double scale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(Mesh::createIcosahedron(color), depth, 1.0/scale);
+    }
+    else if(type == "FractalOctahedron")
+    {
+        double scale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(Mesh::createOctahedron(color), depth, 1.0/scale);
+    }
+    else if(type == "FractalTetrahedron")
+    {
+        double scale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(Mesh::createTetrahedron(color), depth, 1.0/scale);
+    }
+    else if(type == "FractalBuckyBall")
+    {
+        double scale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(Mesh::createBuckyBall(color), depth, 1.0/scale);
+    }
+    else if(type == "MengerSponge")
+    {
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = Mesh::createMengerSponge(color, depth);
+    }
+    else
+    {
+        std::cerr << "unrecognized type\n";
+        exit(1);
+    }
 
     result *= (transform*eye);
     return result;
@@ -84,6 +133,12 @@ Mesh& Mesh::operator*=(const Mat4& transform)
 {
     for(Vec3& vertex : vertices) vertex *= transform;
     return *this;
+}
+Mesh Mesh::operator*(const Mat4& transform) const
+{
+    Mesh result = *this;
+    for(Vec3& vertex : result.vertices) vertex *= transform;
+    return result;
 }
 
 Mesh Mesh::createLineDrawing(const Color& color, const ini::Section& section)
@@ -225,7 +280,7 @@ Mesh Mesh::createTorus(const Color& color, const double R, const double r, const
     return {vertices, indices, color};
 }
 
-Mesh Mesh::createSierpinskiSphere(const Color &color, uint32_t depth)
+Mesh Mesh::createSierpinskiSphere(const Color& color, uint32_t depth)
 {
     Mesh icosahedron = createIcosahedron(color);
     icosahedron.vertices.reserve(12*(uint32_t)pow(2, depth));   // every step doubles the vertices
@@ -239,6 +294,44 @@ Mesh Mesh::createSierpinskiSphere(const Color &color, uint32_t depth)
     for(Vec3& vertex : icosahedron.vertices) vertex /= norm(vertex);
 
     return icosahedron;
+}
+Mesh Mesh::createBuckyBall(const Color& color)
+{
+    auto result = Mesh::createIcosahedron(color);
+    result.vertices.reserve(132);
+    result.indices.reserve(80);
+
+    std::vector<std::vector<uint32_t>> converter;
+    converter.resize(12);
+    for(auto& top : converter) top.reserve(5);
+
+    const uint32_t size = result.indices.size();
+    for(uint32_t i = 0; i < size; i++)
+    {
+        const auto& face = result.indices[i];
+        const uint32_t index = result.vertices.size();
+        result.vertices.emplace_back(result.vertices[face[0]]*(2.0/3.0) + result.vertices[face[1]]*(1.0/3.0));
+        result.vertices.emplace_back(result.vertices[face[0]]*(1.0/3.0) + result.vertices[face[1]]*(2.0/3.0));
+
+        result.vertices.emplace_back(result.vertices[face[1]]*(2.0/3.0) + result.vertices[face[2]]*(1.0/3.0));
+        result.vertices.emplace_back(result.vertices[face[1]]*(1.0/3.0) + result.vertices[face[2]]*(2.0/3.0));
+
+        result.vertices.emplace_back(result.vertices[face[2]]*(2.0/3.0) + result.vertices[face[0]]*(1.0/3.0));
+        result.vertices.emplace_back(result.vertices[face[2]]*(1.0/3.0) + result.vertices[face[0]]*(2.0/3.0));
+
+        converter[face[0]].push_back(index+5);
+        converter[face[1]].push_back(index+2);
+        converter[face[2]].push_back(index+4);
+
+        result.indices[i] = {index+3, index+2, index+1, index+0, index+5, index+4};
+    }
+    for(const auto& top : converter)
+    {
+        result.indices.push_back({top[0], top[1], top[2], top[3], top[4]});
+    }
+    std::cout << "expected vertices: 132 - got: " << result.vertices.size() << '\n';
+    std::cout << "expected indices : 80  - got: " << result.indices.size()  << '\n';
+    return result;
 }
 
 
@@ -299,3 +392,87 @@ std::vector<std::vector<uint32_t>> Mesh::triangulate(const std::vector<std::vect
     }
     return newIndices;
 }
+
+Mesh Mesh::generateFractal(const Mesh& mesh, const uint32_t depth, const double scale)
+{
+    auto vertSize = mesh.vertices.size();
+    auto size = static_cast<uint32_t>(pow(vertSize, depth));
+
+    Mesh scaled = mesh * Mat4::createScalarMatrix(pow(scale, depth));
+    std::vector<Mesh> meshes = {size, scaled};
+
+    Mesh smaller = mesh * Mat4::createScalarMatrix(scale);
+    std::vector<Vec3> diff;
+    diff.reserve(vertSize);
+
+    for(uint32_t i = 0; i < vertSize; i++) diff[i] = mesh.vertices[i] - smaller.vertices[i];
+
+    for(uint32_t i = 0; i < size; i++)
+    {
+        uint32_t temp = i;
+        for(uint32_t j = 0; j < depth; j++)
+        {
+            const Mat4 translation = Mat4::createTranslationMatrix(diff[temp % vertSize] * pow(scale, j));
+            meshes[i] *= translation;
+            temp /= vertSize;
+        }
+    }
+    return mergeMeshes(meshes);
+}
+
+Mesh Mesh::createMengerSponge(const Color& color, uint32_t depth)
+{
+    const Mat4 scalar = Mat4::createScalarMatrix(pow(1.0/3.0, depth));
+    const Mesh scaledCube = createCube(color) * scalar;
+    const auto size = static_cast<uint32_t>(std::pow(20, depth));
+
+    std::vector<Mesh> meshes = {size, scaledCube};
+    std::vector<Vec3> diff = {{-1,-1, 1}, {0,-1, 1}, {1,-1, 1}, { 1,-1, 0}, {1,-1,-1}, {0,-1,-1}, {-1,-1, -1}, {-1,-1, 0},
+                              {-1, 0, 1}, {1, 0, 1}, {1, 0,-1}, {-1, 0,-1},
+                              {-1, 1, 1}, {0, 1, 1}, {1, 1, 1}, { 1, 1, 0}, {1, 1,-1}, {0, 1,-1}, {-1, 1, -1}, {-1, 1, 0}};
+
+    for(Vec3& elem : diff) elem *= 2.0/3.0;
+
+    const uint32_t vertSize = 20;
+    for(uint32_t i = 0; i < size; i++)
+    {
+        uint32_t temp = i;
+        for(uint32_t j = 0; j < depth; j++)
+        {
+            const Mat4 translation = Mat4::createTranslationMatrix(diff[temp % vertSize] * pow(1.0/3.0, j));
+            meshes[i] *= translation;
+            temp /= vertSize;
+        }
+    }
+    return mergeMeshes(meshes);
+}
+
+Mesh Mesh::mergeMeshes(const std::vector<Mesh>& meshes)
+{
+    std::vector<Vec3> vertices;
+    std::vector<std::vector<uint32_t>> indices;
+    vertices.reserve(meshes[0].vertices.size() * meshes.size());
+    indices.reserve(meshes[0].indices.size() * meshes.size());
+
+    uint32_t offset = 0;
+    for(const Mesh& mesh : meshes)
+    {
+        auto begin = end(indices);
+        for(const Vec3& vec  : mesh.vertices) vertices.push_back(vec);
+        for(const auto& face : mesh.indices)  indices.push_back(face);
+
+        std::for_each(begin, end(indices), [offset](std::vector<uint32_t>& face){ for(uint32_t& index : face) index += offset; });
+        offset += mesh.vertices.size();
+    }
+    return {vertices, indices, meshes[0].color};
+}
+
+
+
+
+
+
+
+
+
+

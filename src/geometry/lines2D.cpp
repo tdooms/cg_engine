@@ -179,12 +179,12 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     const auto yMax = static_cast<uint32_t>(std::ceil(std::max(std::max(temp1[1], temp2[1]), temp3[1])));
     const auto yMin = static_cast<uint32_t>(std::ceil(std::min(std::min(temp1[1], temp2[1]), temp3[1])));
 
-    const Vec3 u = temp2 - temp1;
-    const Vec3 v = temp3 - temp1;
+    const Vec3 u = p2 - p1;
+    const Vec3 v = p3 - p1;
     const Vec3 w = cross(u,v);
     const Vec3 g = (temp1 + temp2 + temp3) / 3.0;
 
-    const double k = dot(temp1, w);
+    const double k = dot(p1, w);
     const double dzdx = w[0] / (-d * k);
     const double dzdy = w[1] / (-d * k);
 
@@ -220,8 +220,8 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
             xMax = std::max(xVal, xMax);
         }
         for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
-        {
-            double depth = 1.0001 / g[2] + (x - g[0])*dzdx + (y - g[1])*dzdy;
+        {   
+            double depth = (1.0001 / g[2]) + (x - g[0])*dzdx + (y - g[1])*dzdy;
             if( buffer(x, y, depth) ) image(x,y) = rgb;
         }
     }
@@ -229,7 +229,7 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
 
 img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, const uint32_t size)
 {
-    const auto ranges = getRanges(doProjection(figures, 1), size);
+    const auto ranges   = getRanges(figures, size, 1);
     const double d      = std::get<0>(ranges);
     const double width  = std::get<1>(ranges);
     const double height = std::get<2>(ranges);
@@ -291,6 +291,38 @@ img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& backgr
     return drawLines(lines, background, size, depthBuffer);
 }
 
+std::tuple<double, double, double, double, double> getRanges(const std::vector<Mesh>& meshes, double size, double d)
+{
+    double xMax = -std::numeric_limits<double>::max();
+    double xMin =  std::numeric_limits<double>::max();
+    double yMax = -std::numeric_limits<double>::max();
+    double yMin =  std::numeric_limits<double>::max();
+
+    for(const Mesh& mesh : meshes)
+    {
+        for(const Vec3& vertex : mesh.vertices)
+        {
+            const double div = -(d/vertex[2]);
+            Vec2 proj = {vertex[0] * div, vertex[1] * div};
+            xMax = std::max(proj[0], xMax);
+            xMin = std::min(proj[0], xMin);
+            yMax = std::max(proj[1], yMax);
+            yMin = std::min(proj[1], yMin);
+        }
+    }
+
+    const double xRange = xMax - xMin;
+    const double yRange = yMax - yMin;
+
+    const double width  = size * xRange / std::max(xRange, yRange);
+    const double height = size * yRange / std::max(xRange, yRange);
+    const double scale  = 0.95 * width  / xRange;
+
+    const double dx = (width  - scale * (xMax + xMin)) / 2.0;
+    const double dy = (height - scale * (yMax + yMin)) / 2.0;
+
+    return {scale, width, height, dx, dy};
+}
 
 std::tuple<double, double, double, double, double> getRanges(const std::forward_list<Line2D>& lines, const double size)
 {
@@ -338,7 +370,8 @@ img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& ba
     }
     else
     {
-        for(const Line2D& line : lines) drawLine(image, line.p1.xy()*scale + Vec2{dx, dy}, line.p2.xy()*scale + Vec2{dx, dy}, line.color);
+        for(const Line2D& line : lines)
+            drawLine(image, line.p1.xy()*scale + Vec2{dx, dy}, line.p2.xy()*scale + Vec2{dx, dy}, line.color);
     }
     return image;
 }

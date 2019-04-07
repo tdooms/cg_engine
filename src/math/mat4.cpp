@@ -35,6 +35,10 @@ Mat4 Mat4::createTranslationMatrix(double x, double y, double z)
 {
     return {{1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {x,y,z,1}};
 }
+Mat4 Mat4::createTranslationMatrix(const Vec3& xyz)
+{
+    return {{1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {xyz[0],xyz[1],xyz[2],1}};
+}
 Mat4 Mat4::createScalarMatrix(double x, double y, double z)
 {
     return {{x,0,0,0}, {0,y,0,0}, {0,0,z,0}, {0,0,0,1}};

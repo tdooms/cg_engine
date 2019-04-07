@@ -12,3 +12,4 @@
 void matmul(const double* a, const double* b, double* res);
 void matvecmul(const double* a, const double* b, double* res);
 void vecmatmul(const double* a, const double* b, double* res);
+

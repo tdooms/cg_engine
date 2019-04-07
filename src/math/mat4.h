@@ -23,6 +23,7 @@ struct Mat4
 
     static Mat4 createUnitMatrix();
     static Mat4 createTranslationMatrix(double x, double y, double z);
+    static Mat4 createTranslationMatrix(const Vec3& xyz);
     static Mat4 createScalarMatrix(double x, double y, double z);
     static Mat4 createScalarMatrix(double scale);
 

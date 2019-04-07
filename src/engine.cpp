@@ -5,6 +5,9 @@
 #include "math/mat4.h"
 #include "geometry/mesh.h"
 
+#include "raytracing/worldParser.h"
+#include "raytracing/camera.h"
+
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -53,13 +56,31 @@ img::EasyImage generate_wireframe(const ini::Configuration& configuration, bool 
     return drawFigures(figures, background, size, 1, depthBuffered);
 }
 
-img::EasyImage generate_Mesh(const ini::Configuration& configuration)
+img::EasyImage generate_mesh(const ini::Configuration& configuration)
 {
     const int size = configuration["General"]["size"];
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
     auto figures = parseFigures(configuration);
     return drawTriangulatedMeshes(figures, background, size);
+}
+
+img::EasyImage generate_raytraced(const ini::Configuration& configuration)
+{
+    const uint32_t width   = (int)configuration["General"]["width"  ];
+    const uint32_t height  = (int)configuration["General"]["height" ];
+    const uint32_t samples = (int)configuration["General"]["samples"];
+    const std::vector<double> ambient = configuration["General"]["ambient"];
+
+    auto world = WorldParser::parseWorld(configuration);
+    Camera camera = {width, height, ambient, 0.7, 5};
+
+    for(uint32_t i = 0; i < samples; i++) camera.traceFilm(world.first);
+
+    for(const auto& material : world.second) delete material;
+    for(const auto& hitable  : world.first ) delete hitable ;
+
+    return camera.exportFilm();
 }
 
 img::EasyImage generate_image(const ini::Configuration& configuration)
@@ -69,7 +90,8 @@ img::EasyImage generate_image(const ini::Configuration& configuration)
     if     (type == "2DLSystem") return generate_L2D(configuration);
     else if(type == "Wireframe") return generate_wireframe(configuration, false);
     else if(type == "ZBufferedWireframe") return generate_wireframe(configuration, true);
-    else if(type == "ZBuffering") return generate_Mesh(configuration);
+    else if(type == "ZBuffering") return generate_mesh(configuration);
+    else if(type == "RayTracing") return generate_raytraced(configuration);
     else std::cerr << "unknown type\n";
 
     return img::EasyImage();

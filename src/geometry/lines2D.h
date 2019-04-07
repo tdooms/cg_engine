@@ -32,6 +32,7 @@ void drawLine(img::EasyImage& image, const Vec3& p1, const Vec3& p2, const Color
 void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Color& color);
 
 // tuple<scale, width, height, dx, dy>
+std::tuple<double, double, double, double, double> getRanges(const std::vector<Mesh>& meshes, double size, double d);
 std::tuple<double, double, double, double, double> getRanges(const std::forward_list<Line2D>& lines, double size);
 std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d);
 

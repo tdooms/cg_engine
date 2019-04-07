@@ -171,6 +171,11 @@ img::Color const& img::EasyImage::operator()(unsigned int x, unsigned int y) con
 	return bitmap[x * height + y];
 }
 
+ img::Color& img::EasyImage::operator()(uint32_t index)
+{
+    return bitmap[index];
+}
+
 std::ostream& img::operator<<(std::ostream& out, EasyImage const& image)
 {
 

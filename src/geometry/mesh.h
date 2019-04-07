@@ -12,6 +12,7 @@
 #define ENGINE_MESH_H
 
 #include <vector>
+#include <set>
 #include "../math/vec3.h"
 #include "../math/color.h"
 #include "../math/mat4.h"
@@ -27,6 +28,7 @@ struct Mesh
     : vertices(vertices), indices(indices), color(color) {}
 
     Mesh& operator*=(const Mat4& transform);
+    Mesh operator*(const Mat4& transform) const;
 
     static Mesh parseFigure(const ini::Section& section, const Mat4& eye);
     static Mesh createLineDrawing(const Color& color, const ini::Section& section);
@@ -42,11 +44,17 @@ struct Mesh
     static Mesh createSphere(const Color& color, uint32_t depth);
     static Mesh createTorus(const Color& color, double R, double r, uint32_t n, uint32_t m);
     static Mesh createSierpinskiSphere(const Color& color, uint32_t depth);
+    static Mesh createBuckyBall(const Color& color);
+
 
     static void subdivTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
     static void subdivSierpinskiTriangle(std::vector<Vec3>& vertices, std::vector<std::vector<uint32_t>>& indices, uint32_t face);
 
     static std::vector<std::vector<uint32_t>> triangulate(const std::vector<std::vector<uint32_t>>& indices);
+
+    static Mesh generateFractal(const Mesh& mesh, uint32_t depth, double scale);
+    static Mesh createMengerSponge(const Color& color, uint32_t depth);
+    static Mesh mergeMeshes(const std::vector<Mesh>& meshes);
 
     std::vector<Vec3> vertices;
     std::vector<std::vector<uint32_t>> indices;

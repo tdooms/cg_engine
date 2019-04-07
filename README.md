@@ -51,13 +51,44 @@ Later ga ik eens kijken naar std::unordered_set voor hogere efficientie.
 
 zBuffer     : klasse die een bitmap is met wat overloaded operatoren
 
-Ik heb sinds de laatste keer mijn memory gebruik zwaar verminderd,en mijn snelheid verbeterd:
+Ik heb sinds de laatste keer mijn memory gebruik zwaar verminderd, en mijn snelheid verbeterd:
  - unordered_set ipv set: 30% minder memory en 2-5x sneller O(n*logn) -> O(n).
  - foutje in mijn sphere vertex size voorspelling (er zijn nu geen resizes meer): 10% minder memory 
  
 het totale gealloceerde geheugen met valgrind voor alle testen tesamen test is nu 817 mb, ipv 1150 mb
     
 Verdere optimisaties die kunnen gebeuren:
- - Elke opdeling van een sphere dupliceerd vertices. Dit lijkt me wel geen triviaal op te lossen probleem :(
+ - Elke opdeling van een sphere dupliceerd vertices. 
+ (Dit kan opnieuw met een hashmap maar pas nadat ze zijn aangemaakt, waardoor het niet veel uitmaakt )
+ 
+# Versie 5 (ZBuffered Triangles)
+ 
+ Enige verschil met de cursus is dat ik een aparte functie maak die gewoon de minima en maxima haalt uit de 3D punten, zonder alles dubbel op te slaan.
+ 
+ # Uitbreiding (Ray tracing)
+ 
+ Ik heb als uitbreiding een simpele ray tracer geschreven.
+ 
+ ## Uitleg ini files
+ - ambient: belichten als een ray geen oppervlak raakt
+ - samples, aantal random rays per pixel (best boven de 10)
+ - reflectance: licht dat gereflecteerd wordt
+ - emmitance: licht dat uitgestraald wordt (kan > 1 voor instense lichten)
+ - optioneel - fuzzyness: zorgt voor meer matte gevoel bij metalen
+
+ ## Materialen:
+ - Lambertian: matte, licht gaat naar overal waardoor het matte is
+ - Metal:  metaal, licht wordt mooi rond de normaal gespiegeld 
+ 
+ ## Uileg 1ste afbeedling:
+ Linkse rode bol is metaal.
+ Middenste bol is een lamp.
+ Rechtse blauwe bol is mat.
+ 
+ Men ziet mooi de schaduwen en color bleeding
+ Men ziet zelfs een andere blauwe bol die achter de camera staat in de reflectie van de rode bol.
+ Men ziet zelfs het licht dat op de grond kaatst in de reflectie van de metalen bol.
+ 
+ 
  
  
