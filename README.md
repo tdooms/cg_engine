@@ -65,22 +65,28 @@ Verdere optimisaties die kunnen gebeuren:
  
  Enige verschil met de cursus is dat ik een aparte functie maak die gewoon de minima en maxima haalt uit de 3D punten, zonder alles dubbel op te slaan.
  
- # Uitbreiding (Ray tracing)
+# Versie 6 (Fractals)
+ 
+ Ik heb ook de optimalisatie van de Mengerspons gemaakt.
+ Wilt men zonder de optimalisatie kan men naar Mesh.cpp gaan, 
+ naar createMengerSponge en daar ipv mergeMengerSponge, gewoon mergeMeshes returnen.
+ 
+# Uitbreiding (Ray tracing)
  
  Ik heb als uitbreiding een simpele ray tracer geschreven.
  
- ## Uitleg ini files
+## Uitleg ini files
  - ambient: belichten als een ray geen oppervlak raakt
  - samples, aantal random rays per pixel (best boven de 10)
  - reflectance: licht dat gereflecteerd wordt
  - emmitance: licht dat uitgestraald wordt (kan > 1 voor instense lichten)
  - optioneel - fuzzyness: zorgt voor meer matte gevoel bij metalen
 
- ## Materialen:
+## Materialen:
  - Lambertian: matte, licht gaat naar overal waardoor het matte is
  - Metal:  metaal, licht wordt mooi rond de normaal gespiegeld 
  
- ## Uileg 1ste afbeedling:
+## Uileg 1ste afbeedling:
  Linkse rode bol is metaal.
  Middenste bol is een lamp.
  Rechtse blauwe bol is mat.

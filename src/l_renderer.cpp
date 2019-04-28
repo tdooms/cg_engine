@@ -72,7 +72,7 @@ Mesh LSystem3DRenderer::generateMesh() const
         iter--;
     }
     vertices[0] = {0,0,0};
-    return {vertices, indices, lineColor};
+    return {vertices, indices, {lineColor, {}, {}, {}}};
 }
 
 void LSystem3DRenderer::recursiveEval(char symbol, uint32_t depth)

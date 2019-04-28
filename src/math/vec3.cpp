@@ -94,6 +94,27 @@ Vec3 operator/(double s, const Vec3& a)
     return a * (1.0f/s);
 }
 
+bool operator<(const Vec3& a, const Vec3& b)
+{
+    for(uint32_t i = 0; i < 3; i++)
+    {
+        if(std::abs(a[i] - b[i]) < 0.000000001) continue;
+        if(a[i] < b[i]) return true;
+        if(b[i] < a[i]) return false;
+    }
+    return false;
+}
+
+//bool operator>(const Vec3& a, const Vec3& b)
+//{
+//    for(uint32_t i = 0; i < 3; i++)
+//    {
+//        if(a[i] > b[i]) return true;
+//        if(b[i] > a[i]) return false;
+//    }
+//    return false;
+//}
+
 /*----------------------------------------*/
 
 Vec3 cross(const Vec3& a, const Vec3& b)

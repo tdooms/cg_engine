@@ -60,6 +60,9 @@ struct Vec3
     friend Vec3 operator*(double s, const Vec3& a);
     friend Vec3 operator/(double s, const Vec3& a);
 
+    friend bool operator<(const Vec3& a, const Vec3& b);
+    friend bool operator>(const Vec3& a, const Vec3& b);
+
     /*----------------------------------------*/
 
     friend Vec3 cross(const Vec3& a, const Vec3& b);

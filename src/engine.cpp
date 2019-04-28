@@ -7,6 +7,7 @@
 
 #include "raytracing/worldParser.h"
 #include "raytracing/camera.h"
+#include "math/vec3.h"
 
 #include <fstream>
 #include <iostream>
@@ -26,6 +27,45 @@ std::vector<Mesh> parseFigures(const ini::Configuration& configuration)
         figures[i] =  Mesh::parseFigure(configuration["Figure" + std::to_string(i)], eyeSpace) ;
     }
     return figures;
+}
+
+std::vector<Light> parseLights(const ini::Configuration& configuration)
+{
+    const std::vector<double> eyePos = configuration["General"]["eye"];
+    const Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
+    Mat4 eyeRotation = eyeSpace;
+    eyeRotation[14] = 0;
+
+
+    const uint32_t numLights = static_cast<uint32_t>((int)configuration["General"]["nrLights"]);
+    std::vector<Light> result;
+    result.reserve(numLights);
+
+    for(uint32_t i = 0; i < numLights; i++)
+    {
+        std::vector<double> ambient  = configuration["Light" + std::to_string(i)]["ambientLight" ].as_double_tuple_or_default({0,0,0});
+        std::vector<double> diffuse  = configuration["Light" + std::to_string(i)]["diffuseLight" ].as_double_tuple_or_default({0,0,0});
+        std::vector<double> specular = configuration["Light" + std::to_string(i)]["specularLight"].as_double_tuple_or_default({0,0,0});
+
+        auto type = configuration["Light" + std::to_string(i)]["infinity"];
+        if(type.exists() and type)
+        {
+            Vec3 direction = configuration["Light" + std::to_string(i)]["direction"].as_double_tuple_or_die();
+            direction *= eyeRotation;
+            result.emplace_back(ambient, diffuse, specular, normalize(direction), Light::directional);
+        }
+        else if(type.exists() and not type)
+        {
+             Vec3 position = configuration["Light" + std::to_string(i)]["location"].as_double_tuple_or_die();
+             position *= eyeSpace;
+            result.emplace_back( ambient, diffuse, specular, position, Light::point);
+        }
+        else
+        {
+            result.emplace_back(ambient, diffuse, specular);
+        }
+    }
+    return result;
 }
 
 img::EasyImage generate_L2D(const ini::Configuration& configuration)
@@ -83,6 +123,17 @@ img::EasyImage generate_raytraced(const ini::Configuration& configuration)
     return camera.exportFilm();
 }
 
+img::EasyImage generate_lighting(const ini::Configuration& configuration)
+{
+    const int size = configuration["General"]["size"];
+    const std::vector<double> background = configuration["General"]["backgroundcolor"];
+
+    auto figures = parseFigures(configuration);
+    auto lights = parseLights(configuration);
+
+    return drawTriangulatedMeshes(figures, background, size, lights);
+}
+
 img::EasyImage generate_image(const ini::Configuration& configuration)
 {
     const std::string type = configuration["General"]["type"];
@@ -92,6 +143,7 @@ img::EasyImage generate_image(const ini::Configuration& configuration)
     else if(type == "ZBufferedWireframe") return generate_wireframe(configuration, true);
     else if(type == "ZBuffering") return generate_mesh(configuration);
     else if(type == "RayTracing") return generate_raytraced(configuration);
+    else if(type == "LightedZBuffering") return generate_lighting(configuration);
     else std::cerr << "unknown type\n";
 
     return img::EasyImage();

@@ -160,10 +160,8 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     }
 }
 
-void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Color& color)
+void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Mesh::Material& material, const std::vector<Light>& lights)
 {
-    img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
-
     Vec3 temp1 = p1;
     Vec3 temp2 = p2;
     Vec3 temp3 = p3;
@@ -179,9 +177,7 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     const auto yMax = static_cast<uint32_t>(std::ceil(std::max(std::max(temp1[1], temp2[1]), temp3[1])));
     const auto yMin = static_cast<uint32_t>(std::ceil(std::min(std::min(temp1[1], temp2[1]), temp3[1])));
 
-    const Vec3 u = p2 - p1;
-    const Vec3 v = p3 - p1;
-    const Vec3 w = cross(u,v);
+    const Vec3 w = cross(p2 - p1, p3 - p1);
     const Vec3 g = (temp1 + temp2 + temp3) / 3.0;
 
     const double k = dot(p1, w);
@@ -191,6 +187,28 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     const double step21 = (temp2[0] - temp1[0]) / (temp2[1] - temp1[1]);
     const double step32 = (temp3[0] - temp2[0]) / (temp3[1] - temp2[1]);
     const double step31 = (temp3[0] - temp1[0]) / (temp3[1] - temp1[1]);
+
+    const Vec3 normal = normalize(w);
+
+    Color ambient; Color diffuse; Color specular;
+    for(const auto& light : lights)
+    {
+        const Vec3 l = (light.getType() == Light::directional) ? -light.getDirection() : normalize(light.getPosition() - ((p1 + p2 + p3)/3));
+
+        const double cosa = dot(l, normal);
+        if(cosa > 0) diffuse += light.getDiffuse() * cosa;
+
+        const Vec3 r = 2*cosa*normal - l;
+        const double cosb = dot(-((p1 + p2 + p3)/3), r);
+        if(cosb > 0) specular += light.getSpecular() * std::pow(cosb, material.reflection);
+
+        ambient += light.getAmbient();
+    }
+    ambient ^= material.ambient;
+    diffuse ^= material.diffuse;
+    specular ^= material.specular;
+    const Color color = ambient + diffuse + specular;
+    const img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
 
     double xMin;
     double xMax;
@@ -220,14 +238,16 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
             xMax = std::max(xVal, xMax);
         }
         for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
-        {   
-            double depth = (1.0001 / g[2]) + (x - g[0])*dzdx + (y - g[1])*dzdy;
+        {
+
+
+            const double depth = (1.0001 / g[2]) + (x - g[0])*dzdx + (y - g[1])*dzdy;
             if( buffer(x, y, depth) ) image(x,y) = rgb;
         }
     }
 }
 
-img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, const uint32_t size)
+img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& lights)
 {
     const auto ranges   = getRanges(figures, size, 1);
     const double d      = std::get<0>(ranges);
@@ -244,7 +264,7 @@ img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Co
         auto newIndices = Mesh::triangulate(figure.indices);
         for(const auto& triangle : newIndices)
         {
-            drawTriangle(image, buffer, figure.vertices[triangle[0]], figure.vertices[triangle[1]], figure.vertices[triangle[2]], d, {dx, dy}, figure.color);
+            drawTriangle(image, buffer, figure.vertices[triangle[0]], figure.vertices[triangle[1]], figure.vertices[triangle[2]], d, {dx, dy}, figure.material, lights);
         }
     }
     return image;
@@ -279,7 +299,7 @@ std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const d
                 set.emplace(face[face.size() - 1], face[0]);
             }
         }
-        for(const auto& index : set) lines.emplace_front(projectedVertices[index.p1], projectedVertices[index.p2], figures[i].color);
+        for(const auto& index : set) lines.emplace_front(projectedVertices[index.p1], projectedVertices[index.p2], figures[i].material.ambient);
     }
     return lines;
 }
@@ -347,6 +367,11 @@ std::tuple<double, double, double, double, double> getRanges(const std::forward_
     const double dy = (height - scale * (yMax + yMin)) / 2.0;
 
     return {scale, width, height, dx, dy};
+}
+
+Vec3 getNormal(const std::vector<Vec3>& triangle)
+{
+    return normalize(cross(triangle[1]-triangle[0], triangle[2]-triangle[0]));
 }
 
 img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, const int size, const bool depthBuffer)

@@ -12,6 +12,7 @@
 #include <cmath>
 #include <cassert>
 #include <limits>
+#include <iostream>
 
 
 ZBuffer::ZBuffer(double _width, double _height)

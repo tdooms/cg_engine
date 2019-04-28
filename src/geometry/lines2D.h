@@ -18,6 +18,7 @@
 #include "../math/vec3.h"
 #include "mesh.h"
 #include "zbuffer.h"
+#include "light.h"
 
 struct Line2D
 {
@@ -34,13 +35,12 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
 // tuple<scale, width, height, dx, dy>
 std::tuple<double, double, double, double, double> getRanges(const std::vector<Mesh>& meshes, double size, double d);
 std::tuple<double, double, double, double, double> getRanges(const std::forward_list<Line2D>& lines, double size);
+Vec3 getNormal(const std::vector<Vec3>& triangle);
 std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d);
 
-void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Color& color);
+void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Mesh::Material& material, const std::vector<Light>& lights);
 
-
-
-img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, const uint32_t size);
+img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& lights = {{{1,1,1}, {}, {}}});
 img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, uint32_t size, double d, bool depthBuffer);
 img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, int size, bool depthBuffer);
 

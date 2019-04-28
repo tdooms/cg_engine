@@ -88,6 +88,7 @@ Mat4 Mat4::createEyeTransformationMatrix(double x, double y, double z)
     return {{-sint, -cost*cosp, cost*sinp, 0}, {cost, -sint*cosp, sint*sinp, 0}, {0, sinp, cosp, 0}, {0, 0, -r, 1}};
 }
 
+
 /*----------------------------------------*/
 
 Mat4& Mat4::operator+=(const Mat4& m)
