@@ -29,10 +29,10 @@ Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
     }
     else
     {
-        material.ambient    = section["ambientReflection" ].as_double_tuple_or_die();
-        material.diffuse    = section["diffuseReflection" ].as_double_tuple_or_default({0,0,0});
-        material.specular   = section["specularReflection"].as_double_tuple_or_default({0,0,0});
-        material.reflection = section["reflection"        ].as_double_or_default(0);
+        material.ambient    = section["ambientReflection"    ].as_double_tuple_or_die();
+        material.diffuse    = section["diffuseReflection"    ].as_double_tuple_or_default({0,0,0});
+        material.specular   = section["specularReflection"   ].as_double_tuple_or_default({0,0,0});
+        material.reflection = section["reflectionCoefficient"].as_double_or_default(0);
     }
 
     Mat4 transform = Mat4::createTotalTranslationMatrix(translation, scale, rotation * M_PI/180.0);

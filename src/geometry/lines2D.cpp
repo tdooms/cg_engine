@@ -190,26 +190,6 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
 
     const Vec3 normal = normalize(w);
 
-    Color ambient; Color diffuse; Color specular;
-    for(const auto& light : lights)
-    {
-        const Vec3 l = (light.getType() == Light::directional) ? -light.getDirection() : normalize(light.getPosition() - ((p1 + p2 + p3)/3));
-
-        const double cosa = dot(l, normal);
-        if(cosa > 0) diffuse += light.getDiffuse() * cosa;
-
-        const Vec3 r = 2*cosa*normal - l;
-        const double cosb = dot(-((p1 + p2 + p3)/3), r);
-        if(cosb > 0) specular += light.getSpecular() * std::pow(cosb, material.reflection);
-
-        ambient += light.getAmbient();
-    }
-    ambient ^= material.ambient;
-    diffuse ^= material.diffuse;
-    specular ^= material.specular;
-    const Color color = ambient + diffuse + specular;
-    const img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
-
     double xMin;
     double xMax;
     double xVal;
@@ -239,9 +219,32 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
         }
         for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
         {
-
-
             const double depth = (1.0001 / g[2]) + (x - g[0])*dzdx + (y - g[1])*dzdy;
+            const double xPos = double((x - dxy[0])) / (-depth*d);
+            const double yPos = double((y - dxy[1])) / (-depth*d);
+
+            Color ambient, diffuse, specular;
+            for(const auto& light : lights)
+            {
+                const Vec3 pos = Vec3{xPos, yPos, 1.0/depth};
+                const Vec3 l = (light.getType() == Light::directional) ? -light.getDirection() : normalize(light.getPosition() - pos);
+
+                const double cosa = dot(l, normal);
+                if(cosa > 0) diffuse += light.getDiffuse() * cosa;
+
+                const Vec3 r = 2*cosa*normal - l;
+                const double cosb = dot(-normalize(pos), normalize(r));
+                if(cosb > 0) specular += (light.getSpecular() * std::pow(cosb, material.reflection));
+
+                ambient += light.getAmbient();
+            }
+            ambient ^= material.ambient;
+            diffuse ^= material.diffuse;
+            specular ^= material.specular;
+            Color color = ambient + diffuse + specular;
+            color[0] = std::min(color[0], 1.0); color[1] = std::min(color[1], 1.0); color[2] = std::min(color[2], 1.0);
+            const img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
+
             if( buffer(x, y, depth) ) image(x,y) = rgb;
         }
     }
