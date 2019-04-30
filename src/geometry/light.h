@@ -16,23 +16,19 @@
 class Light
 {
 public:
-    enum Type{normal, directional, point};
-
-    Light(const Color& ambient, const Color& diffuse, const Color& specular, const Vec3& vector = {}, Type type = normal) : ambient(ambient), diffuse(diffuse), specular(specular), vector(vector), type(type) {}
+    Light(const Color& ambient, const Color& diffuse, const Color& specular, const Vec3& vector = {}) : ambient(ambient), diffuse(diffuse), specular(specular), vector(vector) {}
 
     Color getAmbient()   const { return ambient;  };
     Color getDiffuse()   const { return diffuse;  };
     Color getSpecular()  const { return specular; };
     Color getDirection() const { return vector;   };
     Color getPosition()  const { return vector;   };
-    Type getType()       const { return type;     };
 
 private:
     Color ambient;
     Color diffuse;
     Color specular;
     Vec3 vector;
-    Type type;
 };
 
 

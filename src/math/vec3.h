@@ -25,6 +25,7 @@ struct Vec3
 
     Vec3(const std::vector<double>& data) : data{data[0], data[1], data[2]} {}
     Vec3(const Vec2& data) : data{data[0], data[1], 0} {}
+    Vec3(const Vec2& data, double z) : data{data[0], data[1], z} {}
 
     /*----------------------------------------*/
 

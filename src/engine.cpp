@@ -29,7 +29,7 @@ std::vector<Mesh> parseFigures(const ini::Configuration& configuration)
     return figures;
 }
 
-std::vector<Light> parseLights(const ini::Configuration& configuration)
+std::pair<std::vector<Light>, std::vector<Light>> parseLights(const ini::Configuration& configuration)
 {
     const std::vector<double> eyePos = configuration["General"]["eye"];
     const Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
@@ -38,8 +38,8 @@ std::vector<Light> parseLights(const ini::Configuration& configuration)
 
 
     const uint32_t numLights = static_cast<uint32_t>((int)configuration["General"]["nrLights"]);
-    std::vector<Light> result;
-    result.reserve(numLights);
+    std::vector<Light> directional;
+    std::vector<Light> point;
 
     for(uint32_t i = 0; i < numLights; i++)
     {
@@ -52,20 +52,20 @@ std::vector<Light> parseLights(const ini::Configuration& configuration)
         {
             Vec3 direction = configuration["Light" + std::to_string(i)]["direction"].as_double_tuple_or_die();
             direction *= eyeRotation;
-            result.emplace_back(ambient, diffuse, specular, normalize(direction), Light::directional);
+            directional.emplace_back(ambient, diffuse, specular, normalize(direction));
         }
         else if(type.exists() and not type)
         {
-             Vec3 position = configuration["Light" + std::to_string(i)]["location"].as_double_tuple_or_die();
-             position *= eyeSpace;
-            result.emplace_back( ambient, diffuse, specular, position, Light::point);
+            Vec3 position = configuration["Light" + std::to_string(i)]["location"].as_double_tuple_or_die();
+            position *= eyeSpace;
+            point.emplace_back(ambient, diffuse, specular, position);
         }
         else
         {
-            result.emplace_back(ambient, diffuse, specular);
+            point.emplace_back(ambient, diffuse, specular);
         }
     }
-    return result;
+    return {directional, point};
 }
 
 img::EasyImage generate_L2D(const ini::Configuration& configuration)
@@ -102,7 +102,7 @@ img::EasyImage generate_mesh(const ini::Configuration& configuration)
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
     auto figures = parseFigures(configuration);
-    return drawTriangulatedMeshes(figures, background, size);
+    return drawTriangulatedMeshes(figures, background, size, {{{1,1,1}, {}, {}}}, {});
 }
 
 img::EasyImage generate_raytraced(const ini::Configuration& configuration)
@@ -131,7 +131,7 @@ img::EasyImage generate_lighting(const ini::Configuration& configuration)
     auto figures = parseFigures(configuration);
     auto lights = parseLights(configuration);
 
-    return drawTriangulatedMeshes(figures, background, size, lights);
+    return drawTriangulatedMeshes(figures, background, size, std::get<0>(lights), std::get<1>(lights));
 }
 
 img::EasyImage generate_image(const ini::Configuration& configuration)

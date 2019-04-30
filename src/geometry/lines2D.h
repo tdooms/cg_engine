@@ -38,9 +38,13 @@ std::tuple<double, double, double, double, double> getRanges(const std::forward_
 Vec3 getNormal(const std::vector<Vec3>& triangle);
 std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d);
 
-void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Mesh::Material& material, const std::vector<Light>& lights);
+void calculateLights(std::array<Color, 3>& colors, const Vec3& pos, const Vec3& normal, const Light& light, double reflection, bool directional);
+img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& material);
 
-img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& lights = {{{1,1,1}, {}, {}}});
+void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy,
+        const Mesh::Material& material, const std::vector<Light>& directional, const std::vector<Light>& point);
+
+img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& directional, const std::vector<Light>& point);
 img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, uint32_t size, double d, bool depthBuffer);
 img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, int size, bool depthBuffer);
 

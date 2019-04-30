@@ -92,10 +92,15 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
 
     if (x0 == x1)
     {
+        if(y0 > y1)
+        {
+            std::swap(z0, z1);
+            std::swap(y0, y1);
+        }
         iter = z0;
-        step = (z1-z0)/(std::max(y0, y1) - std::min(y0, y1));
+        step = (z1-z0)/(y1- y0);
 
-        for(uint32_t i = std::min(y0, y1); i <= std::max(y0, y1); i++)
+        for(uint32_t i = y0; i <= y1; i++)
         {
             if( buffer(x0, i, 1.0/iter)) image(x0, i) = rgb;
             iter += step;
@@ -103,10 +108,15 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     }
     else if (y0 == y1)
     {
+        if(x0 > x1)
+        {
+            std::swap(z0, z1);
+            std::swap(x0, x1);
+        }
         iter = z0;
-        step = (z1-z0)/(std::max(x0, x1) - std::min(x0, x1));
+        step = (z1-z0)/(x1 - x0);
 
-        for(uint32_t i = std::min(x0, x1); i <= std::max(x0, x1); i++)
+        for(uint32_t i = x0; i <= x1; i++)
         {
             if( buffer(i, y0, 1.0/iter )) image(i, y0) = rgb;
             iter += step;
@@ -160,7 +170,33 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     }
 }
 
-void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy, const Mesh::Material& material, const std::vector<Light>& lights)
+void calculateLights(std::array<Color, 3>& colors, const Vec3& pos, const Vec3& normal, const Light& light, double reflection, bool directional)
+{
+    const Vec3 l = (directional) ? -light.getDirection() : normalize(light.getPosition() - pos);
+
+    colors[0] += light.getAmbient();
+
+    const double cosa = dot(l, normal);
+    if(cosa > 0) colors[1] += light.getDiffuse() * cosa;
+
+    const Vec3 r = 2*cosa*normal - l;
+    const double cosb = dot(-normalize(pos), normalize(r));
+    if(cosb > 0) colors[2] += (light.getSpecular() * std::pow(cosb, reflection));
+}
+
+img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& material)
+{
+    colors[0] ^= material.ambient;
+    colors[1] ^= material.diffuse;
+    colors[2] ^= material.specular;
+
+    Color color = colors[0] + colors[1] + colors[2];
+    color[0] = std::min(color[0], 1.0); color[1] = std::min(color[1], 1.0); color[2] = std::min(color[2], 1.0);
+    return { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
+}
+
+void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy,
+        const Mesh::Material& material, const std::vector<Light>& directional, const std::vector<Light>& point)
 {
     Vec3 temp1 = p1;
     Vec3 temp2 = p2;
@@ -170,6 +206,8 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     temp2[0] *= -d/temp2[2]; temp2[1] *= -d/temp2[2];
     temp3[0] *= -d/temp3[2]; temp3[1] *= -d/temp3[2];
 
+    if((p2[0] - p1[0]) * (p3[1] - p1[1]) - (p3[0] - p1[0]) * (p2[1] - p1[1]) < 0) return; // backface culling
+
     temp1 += dxy;
     temp2 += dxy;
     temp3 += dxy;
@@ -177,9 +215,11 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     const auto yMax = static_cast<uint32_t>(std::ceil(std::max(std::max(temp1[1], temp2[1]), temp3[1])));
     const auto yMin = static_cast<uint32_t>(std::ceil(std::min(std::min(temp1[1], temp2[1]), temp3[1])));
 
-    const Vec3 w = cross(p2 - p1, p3 - p1);
     const Vec3 g = (temp1 + temp2 + temp3) / 3.0;
+    const Vec3 w = cross(p2 - p1, p3 - p1);
+    const Vec3 normal = normalize(w);
 
+    const double middleZ = 1.0/(3.0*p1[2]) + 1.0/(3.0*p2[2]) + 1.0/(3.0*p3[2]);
     const double k = dot(p1, w);
     const double dzdx = w[0] / (-d * k);
     const double dzdy = w[1] / (-d * k);
@@ -188,7 +228,14 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     const double step32 = (temp3[0] - temp2[0]) / (temp3[1] - temp2[1]);
     const double step31 = (temp3[0] - temp1[0]) / (temp3[1] - temp1[1]);
 
-    const Vec3 normal = normalize(w);
+    std::array<Color, 3> colors;  // ambient, diffuse, specular
+    img::Color rgb;
+
+    for(const auto& light : directional) calculateLights(colors, (p1+p2+p3)/3, normal, light, material.reflection, true);
+    if(point.empty())
+    {
+        rgb = combineLights(colors, material);
+    }
 
     double xMin;
     double xMax;
@@ -219,38 +266,22 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
         }
         for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
         {
-            const double depth = (1.0001 / g[2]) + (x - g[0])*dzdx + (y - g[1])*dzdy;
-            const double xPos = double((x - dxy[0])) / (-depth*d);
-            const double yPos = double((y - dxy[1])) / (-depth*d);
+            const double depth = (1.0001 * middleZ) + (x - g[0])*dzdx + (y - g[1])*dzdy;
+            const Vec2 temp = {double(x), double(y)};
+            const Vec3 pos = { (temp-dxy)/(-depth*d), 1.0/depth };
 
-            Color ambient, diffuse, specular;
-            for(const auto& light : lights)
+            if(!point.empty())
             {
-                const Vec3 pos = Vec3{xPos, yPos, 1.0/depth};
-                const Vec3 l = (light.getType() == Light::directional) ? -light.getDirection() : normalize(light.getPosition() - pos);
-
-                const double cosa = dot(l, normal);
-                if(cosa > 0) diffuse += light.getDiffuse() * cosa;
-
-                const Vec3 r = 2*cosa*normal - l;
-                const double cosb = dot(-normalize(pos), normalize(r));
-                if(cosb > 0) specular += (light.getSpecular() * std::pow(cosb, material.reflection));
-
-                ambient += light.getAmbient();
+                std::array<Color, 3> pixelColors = colors; // ambient, diffuse, specular
+                for(const auto& light : point) calculateLights(pixelColors, pos, normal, light, material.reflection, false);
+                rgb = combineLights(pixelColors, material);
             }
-            ambient ^= material.ambient;
-            diffuse ^= material.diffuse;
-            specular ^= material.specular;
-            Color color = ambient + diffuse + specular;
-            color[0] = std::min(color[0], 1.0); color[1] = std::min(color[1], 1.0); color[2] = std::min(color[2], 1.0);
-            const img::Color rgb = { static_cast<uint8_t>(color[0]*255.99), static_cast<uint8_t>(color[1]*255.99), static_cast<uint8_t>(color[2]*255.99) };
-
             if( buffer(x, y, depth) ) image(x,y) = rgb;
         }
     }
 }
 
-img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& lights)
+img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& directional, const std::vector<Light>& point)
 {
     const auto ranges   = getRanges(figures, size, 1);
     const double d      = std::get<0>(ranges);
@@ -267,7 +298,7 @@ img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Co
         auto newIndices = Mesh::triangulate(figure.indices);
         for(const auto& triangle : newIndices)
         {
-            drawTriangle(image, buffer, figure.vertices[triangle[0]], figure.vertices[triangle[1]], figure.vertices[triangle[2]], d, {dx, dy}, figure.material, lights);
+            drawTriangle(image, buffer, figure.vertices[triangle[0]], figure.vertices[triangle[1]], figure.vertices[triangle[2]], d, {dx, dy}, figure.material, directional, point);
         }
     }
     return image;
