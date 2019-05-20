@@ -19,6 +19,7 @@
 #include "mesh.h"
 #include "zbuffer.h"
 #include "light.h"
+#include "../texture.h"
 
 struct Line2D
 {
@@ -35,17 +36,18 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
 // tuple<scale, width, height, dx, dy>
 std::tuple<double, double, double, double, double> getRanges(const std::vector<Mesh>& meshes, double size, double d);
 std::tuple<double, double, double, double, double> getRanges(const std::forward_list<Line2D>& lines, double size);
-Vec3 getNormal(const std::vector<Vec3>& triangle);
-std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d);
+std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, double d, const Mat4& eye);
 
-void calculateLights(std::array<Color, 3>& colors, const Vec3& pos, const Vec3& normal, const Light& light, double reflection, bool directional);
-img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& material);
+void calculateLights(std::array<Color, 3>& colors, const Vec3& pos, const Vec3& normal, double reflection, bool directional, const Light& light);
+img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& material, const Vec3* pos = nullptr, const Texture* texture = nullptr);
 
 void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy,
-        const Mesh::Material& material, const std::vector<Light>& directional, const std::vector<Light>& point);
+        const Mesh::Material& material, const std::vector<Light>& directional, const std::vector<Light>& point, bool depthOnly, const Mat4& invEye, const Texture* texture);
 
-img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& directional, const std::vector<Light>& point);
-img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, uint32_t size, double d, bool depthBuffer);
+std::tuple<img::EasyImage, ZBuffer, std::tuple<double, double, double, double, double>> drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background,
+        uint32_t size, const std::vector<Light>& directional, const std::vector<Light>& point, const Mat4& eye, bool depthOnly = false, const Texture* texture = nullptr);
+
+img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, uint32_t size, double d, bool depthBuffer, const Mat4& eye);
 img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, int size, bool depthBuffer);
 
 #endif //ENGINE_LINE_H

@@ -8,6 +8,8 @@
 //============================================================================
 
 #include "math.h"
+#include <array>
+
 
 void matmul(const double* const a, const double* const b, double* const res)
 {
@@ -46,4 +48,19 @@ void vecmatmul(const double* const a, const double* const b, double* const res)
     res[1] = a[0] *b[1] + a[1] *b[5] + a[2] *b[9] + a[3]*b[13];
     res[2] = a[0] *b[2] + a[1] *b[6] + a[2]*b[10] + a[3]*b[14];
     res[3] = a[0] *b[3] + a[1] *b[7] + a[2]*b[11] + a[3]*b[15];
+}
+
+double det3x3(const double* a, uint8_t i, uint8_t j)
+{
+    uint32_t iter = 0;
+    std::array<uint8_t, 9> indices;
+    for(uint32_t k = 0; k < 16; k++)
+    {
+        if(k % 4 == j or k / 4 == i) continue;
+        indices[iter] = k;
+        iter++;
+    }
+    return a[indices[0]] * ( a[indices[4]]*a[indices[8]] - a[indices[7]]*a[indices[5]]) -
+            a[indices[1]] * ( a[indices[3]]*a[indices[8]] - a[indices[6]]*a[indices[5]]) +
+            a[indices[2]] * ( a[indices[3]]*a[indices[7]] - a[indices[6]]*a[indices[4]]);
 }

@@ -11,6 +11,7 @@
 #include "math.h"
 #include <cstring>
 #include <cmath>
+#include <array>
 
 /*----------------------------------------*/
 
@@ -81,13 +82,33 @@ Mat4 Mat4::createEyeTransformationMatrix(double x, double y, double z)
     double r = sqrt(x*x + y*y + z*z);
     double theta = std::atan2(y,x);
     double phi = std::acos(z/r);
+//
+//    double sinp = std::sin(phi);    double cosp = std::cos(phi);
+//    double sint = std::sin(theta);  double cost = std::cos(theta);
+//
+//    return {{-sint, -cost*cosp, cost*sinp, 0}, {cost, -sint*cosp, sint*sinp, 0}, {0, sinp, cosp, 0}, {0, 0, -r, 1}};
 
-    double sinp = std::sin(phi);    double cosp = std::cos(phi);
-    double sint = std::sin(theta);  double cost = std::cos(theta);
-
-    return {{-sint, -cost*cosp, cost*sinp, 0}, {cost, -sint*cosp, sint*sinp, 0}, {0, sinp, cosp, 0}, {0, 0, -r, 1}};
+    return createZRotationMatrix(-M_PI_2-theta) * createXRotationMatrix(-phi) * createTranslationMatrix(0, 0, -r);
 }
 
+/*----------------------------------------*/
+
+double Mat4::determinant(const Mat4& m)
+{
+    return m[0] * det3x3(m.begin(), 0, 0) - m[4] * det3x3(m.begin(), 1, 0) + m[8] * det3x3(m.begin(), 2, 0) - m[12] * det3x3(m.begin(), 3, 0);
+}
+Mat4 Mat4::adjugate(const Mat4& m)
+{
+    Mat4 res;
+    for(uint32_t i = 0; i < 4; i++)
+        for(uint32_t j = 0; j < 4; j++)
+            res[4*j+i] = std::pow(-1, i+j) * det3x3(m.begin(), i, j);
+    return res;
+}
+Mat4 Mat4::inverse(const Mat4& m)
+{
+    return adjugate(m) / determinant(m);
+}
 
 /*----------------------------------------*/
 

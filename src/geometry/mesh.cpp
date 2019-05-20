@@ -15,9 +15,12 @@
 #include <assert.h>
 #include "../l_parser.h"
 #include "../l_renderer.h"
+#include "index.h"
 
-Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
+Mesh Mesh::parseFigure(const ini::Section& section)
 {
+    enum Type{normal, fractal, thick};
+
     Vec3 rotation    = {section["rotateX"], section["rotateY"], section["rotateZ"]};
     Vec3 translation = section["center"].as_double_tuple_or_die();
     double scale     = section["scale"];
@@ -37,33 +40,46 @@ Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
 
     Mat4 transform = Mat4::createTotalTranslationMatrix(translation, scale, rotation * M_PI/180.0);
 
-    std::string type = section["type"];
+    std::string shape = section["type"];
+    Type type;
+    if(shape.find("Fractal") == 0)
+    {
+        type = fractal;
+        shape = shape.substr(7);
+    }
+    else if(shape.find("Thick") == 0)
+    {
+        type = thick;
+        shape = shape.substr(5);
+    }
+    else type = normal;
+
     Mesh result;
 
-    if     (type == "LineDrawing" ) result = Mesh::createLineDrawing(material, section);
-    else if(type == "Cube"        ) result = Mesh::createCube(material);
-    else if(type == "Tetrahedron" ) result = Mesh::createTetrahedron(material);
-    else if(type == "Octahedron"  ) result = Mesh::createOctahedron(material);
-    else if(type == "Icosahedron" ) result = Mesh::createIcosahedron(material);
-    else if(type == "Dodecahedron") result = Mesh::createDodecahedron(material);
-    else if(type == "Cylinder"    )
+    if     (shape == "LineDrawing" ) result = Mesh::createLineDrawing(material, section);
+    else if(shape == "Cube"        ) result = Mesh::createCube(material);
+    else if(shape == "Tetrahedron" ) result = Mesh::createTetrahedron(material);
+    else if(shape == "Octahedron"  ) result = Mesh::createOctahedron(material);
+    else if(shape == "Icosahedron" ) result = Mesh::createIcosahedron(material);
+    else if(shape == "Dodecahedron") result = Mesh::createDodecahedron(material);
+    else if(shape == "Cylinder"    )
     {
         double height = section["height"];
         uint32_t num = static_cast<uint32_t>((int)section["n"]);
         result = Mesh::createCylinder(material, height, num);
     }
-    else if(type == "Cone"        )
+    else if(shape == "Cone"        )
     {
         double height = section["height"];
         uint32_t num = static_cast<uint32_t>((int)section["n"]);
         result = Mesh::createCone(material, height, num);
     }
-    else if(type == "Sphere"      )
+    else if(shape == "Sphere"      )
     {
         uint32_t depth = static_cast<uint32_t>((int)section["n"]);
         result = Mesh::createSphere(material, depth);
     }
-    else if(type == "Torus"      )
+    else if(shape == "Torus"      )
     {
         double R = section["R"];
         double r = section["r"];
@@ -71,12 +87,12 @@ Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
         uint32_t m = static_cast<uint32_t>((int)section["m"]);
         result = Mesh::createTorus(material, R, r, n, m);
     }
-    else if(type == "Sierpinski Sphere")
+    else if(shape == "SierpinskiSphere")
     {
         uint32_t depth = static_cast<uint32_t>((int)section["n"]);
         result = Mesh::createSierpinskiSphere(material, depth);
     }
-    else if(type == "3DLSystem")
+    else if(shape == "3DLSystem")
     {
         const std::string path = section["inputfile"];
         std::ifstream input_stream(path);
@@ -88,58 +104,35 @@ Mesh Mesh::parseFigure(const ini::Section& section, const Mat4& eye)
         LSystem3DRenderer renderer = {l_system, material.ambient};
         result = renderer.generateMesh();
     }
-    else if(type == "BuckyBall")
+    else if(shape == "BuckyBall")
     {
         result = Mesh::createBuckyBall(material);
     }
-    else if(type == "FractalCube")
-    {
-        double scale = section["fractalScale"];
-        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
-        result = generateFractal(Mesh::createCube(material), depth, 1.0/scale);
-    }
-    else if(type == "FractalDodecahedron")
-    {
-        double scale = section["fractalScale"];
-        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
-        result = generateFractal(Mesh::createDodecahedron(material), depth, 1.0/scale);
-    }
-    else if(type == "FractalIcosahedron")
-    {
-        double scale = section["fractalScale"];
-        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
-        result = generateFractal(Mesh::createIcosahedron(material), depth, 1.0/scale);
-    }
-    else if(type == "FractalOctahedron")
-    {
-        double scale = section["fractalScale"];
-        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
-        result = generateFractal(Mesh::createOctahedron(material), depth, 1.0/scale);
-    }
-    else if(type == "FractalTetrahedron")
-    {
-        double scale = section["fractalScale"];
-        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
-        result = generateFractal(Mesh::createTetrahedron(material), depth, 1.0/scale);
-    }
-    else if(type == "FractalBuckyBall")
-    {
-        double scale = section["fractalScale"];
-        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
-        result = generateFractal(Mesh::createBuckyBall(material), depth, 1.0/scale);
-    }
-    else if(type == "MengerSponge")
+    else if(shape == "MengerSponge")
     {
         uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
         result = Mesh::createMengerSponge(material, depth);
     }
     else
     {
-        std::cerr << "unrecognized type\n";
-        exit(1);
+        throw std::runtime_error("unrecognized type\n");
     }
 
-    result *= (transform*eye);
+    if(type == fractal)
+    {
+        double fractalScale = section["fractalScale"];
+        uint32_t depth = static_cast<uint32_t>((int)section["nrIterations"]);
+        result = generateFractal(result, depth, 1.0/fractalScale);
+    }
+    else if(type == thick)
+    {
+        uint32_t sphereDepth = section["m"].as_int_or_die();
+        uint32_t cylinderDepth = section["n"].as_int_or_die();
+        double radius = section["radius"];
+        result = generateThickMesh(result, radius, cylinderDepth, sphereDepth, material);
+    }
+
+    result *= transform;
     return result;
 }
 
@@ -218,7 +211,7 @@ Mesh Mesh::createDodecahedron(const Material& material)
     return {vertices, indices, material};
 }
 
-Mesh Mesh::createCylinder(const Material& material, const double height, const uint32_t num)
+Mesh Mesh::createCylinder(const Material& material, const double height, const uint32_t num, const bool edges)
 {
     std::vector<Vec3> vertices(2*num);
     for(uint32_t i = 0; i < num; i++)
@@ -231,10 +224,14 @@ Mesh Mesh::createCylinder(const Material& material, const double height, const u
     for(uint32_t i = 0; i < num-1; i++) indices[i] = {i, i+1, num+i+1, num+i};
     indices[num-1] = {num-1, 0, num, 2*num-1};
 
-    indices[num].resize(num);
-    indices[num+1].resize(num);
-    std::generate(begin(indices[num  ]), end(indices[num  ]), [n = num-1] () mutable { return n--; });
-    std::generate(begin(indices[num+1]), end(indices[num+1]), [n = num  ] () mutable { return n++; });
+    if(edges)
+    {
+        indices[num].resize(num);
+        indices[num+1].resize(num);
+        std::generate(begin(indices[num  ]), end(indices[num  ]), [n = num-1] () mutable { return n--; });
+        std::generate(begin(indices[num+1]), end(indices[num+1]), [n = num  ] () mutable { return n++; });
+    }
+    else indices.resize(num);
 
     return {vertices, indices, material};
 }
@@ -580,4 +577,42 @@ Mesh Mesh::mergeMengerSponge(const std::vector<Mesh> &meshes)
         result.indices.push_back(face);
     }
     return result;
+}
+
+Mesh Mesh::generateThickMesh(const Mesh& mesh, double radius, uint32_t cylinderDepth, uint32_t sphereDepth, const Material& material)
+{
+    std::vector<Mesh> result;
+    Mesh sphere = createSphere(material, sphereDepth);
+    sphere *= Mat4::createScalarMatrix(radius);
+
+    std::unordered_set<Index> set(mesh.indices.size() * mesh.indices[0].size() / 2);
+    for (const auto& face : mesh.indices)
+    {
+        for(uint32_t j = 0; j < face.size()-1; j++) set.emplace(face[j], face[j+1]);
+        if(face.size() != 2) set.emplace(face[face.size() - 1], face[0]);
+    }
+
+    // reserve amount of lines + amount of points
+    result.reserve(set.size() + mesh.vertices.size());
+    for(const auto& vertex : mesh.vertices)
+    {
+        result.push_back(sphere);
+        result.back() *= Mat4::createTranslationMatrix(vertex[0], vertex[1], vertex[2]);
+    }
+    for(const auto& line : set)
+    {
+        Vec3 point = mesh.vertices[line.p2] - mesh.vertices[line.p1];
+        double height = sqrt(norm(point)) / radius;
+
+        result.emplace_back(createCylinder(material, height, cylinderDepth, false));
+        point /= 2;
+
+        double r = sqrt(norm(point));
+        double theta = std::atan2(point[1], point[0]);
+        double phi = std::acos(point[2] / r);
+
+        result.back() *= Mat4::createTotalTranslationMatrix(mesh.vertices[line.p1], radius, {phi, 0, M_PI_2 + theta});
+    }
+
+    return mergeMeshes(result);
 }

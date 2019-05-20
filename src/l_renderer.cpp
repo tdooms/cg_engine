@@ -77,48 +77,55 @@ Mesh LSystem3DRenderer::generateMesh() const
 
 void LSystem3DRenderer::recursiveEval(char symbol, uint32_t depth)
 {
-    if      (symbol == '(') pos.push(pos.top());
-    else if (symbol == ')') pos.pop();
+    if      (symbol == '('){ pos.push(pos.top()); hasChanged = true; }
+    else if (symbol == ')'){ pos.pop(); hasChanged = true; }
     else if (symbol == '+')
     {
         const Vec3 temp = pos.top().h;
         pos.top().h = temp * cos(angle) + pos.top().l * sin(angle);
         pos.top().l = -temp * sin(angle) + pos.top().l * cos(angle);
+        hasChanged = true;
     }
     else if (symbol == '-')
     {
         const Vec3 temp = pos.top().h;
         pos.top().h = pos.top().h * cos(-angle) + pos.top().l * sin(-angle);
         pos.top().l = -temp * sin(-angle) + pos.top().l * cos(-angle);
+        hasChanged = true;
     }
     else if(symbol == '^')
     {
         const Vec3 temp = pos.top().h;
         pos.top().h =  temp * cos(angle) + pos.top().u * sin(angle);
         pos.top().u = -temp * sin(angle) + pos.top().u * cos(angle);
+        hasChanged = true;
     }
     else if (symbol == '&')
     {
         const Vec3 temp = pos.top().h;
         pos.top().h =  temp * cos(-angle) + pos.top().u * sin(-angle);
         pos.top().u = -temp * sin(-angle) + pos.top().u * cos(-angle);
+        hasChanged = true;
     }
     else if(symbol == '\\')
     {
         const Vec3 temp = pos.top().l;
         pos.top().l = temp * cos(angle) - pos.top().u * sin(angle);
         pos.top().u = temp * sin(angle) + pos.top().u * cos(angle);
+        hasChanged = true;
     }
     else if (symbol == '/')
     {
         const Vec3 temp = pos.top().l;
         pos.top().l = temp * cos(-angle) - pos.top().u * sin(-angle);
         pos.top().u = temp * sin(-angle) + pos.top().u * cos(-angle);
+        hasChanged = true;
     }
     else if(symbol == '|')
     {
         pos.top().h = -pos.top().h;
         pos.top().l = -pos.top().l;
+        hasChanged = true;
     }
     else if (depth == maxDepth && exists(symbol)) addLine();
     else if (exists(symbol)) for(char c : info.get_replacement(symbol)) recursiveEval(c, depth+1);
@@ -132,7 +139,15 @@ bool LSystem3DRenderer::exists(char c) const
 
 void LSystem3DRenderer::addLine()
 {
-    pos.top().p += pos.top().h;                                     // P += H
-    lines.emplace_front(pos.top().p, pos.top().index, ++lastIndex); // add new line
-    pos.top().index = lastIndex;                                    // rewrite the last used index into top
+    pos.top().p += pos.top().h;                                                      // P += H
+    if(!hasChanged)
+    {
+        std::get<0>(lines.front()) = pos.top().p;
+    }
+    else
+    {
+        lines.emplace_front(pos.top().p, pos.top().index, ++lastIndex);                 // add new line
+        pos.top().index = lastIndex;                                                    // rewrite the last used index into top
+        hasChanged = false;
+    }
 }

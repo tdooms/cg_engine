@@ -12,24 +12,19 @@
 
 #include "../math/color.h"
 
-
-class Light
+struct Light
 {
-public:
-    Light(const Color& ambient, const Color& diffuse, const Color& specular, const Vec3& vector = {}) : ambient(ambient), diffuse(diffuse), specular(specular), vector(vector) {}
+    Light(const Color& ambient, const Color& diffuse, const Color& specular, const Vec3& vector = {}, const Mat4& eye = {}, const ZBuffer& shadowMask = {0,0}, std::array<double, 3> dValues = {}, bool shadow = false) :
+    light{ambient, diffuse, specular}, vector(vector), eye(eye), shadowMask(shadowMask), dValues(dValues), shadow(shadow) {}
 
-    Color getAmbient()   const { return ambient;  };
-    Color getDiffuse()   const { return diffuse;  };
-    Color getSpecular()  const { return specular; };
-    Color getDirection() const { return vector;   };
-    Color getPosition()  const { return vector;   };
-
-private:
-    Color ambient;
-    Color diffuse;
-    Color specular;
+    std::array<Vec3, 3> light;
     Vec3 vector;
-};
 
+    // needed for shadows
+    Mat4 eye;
+    ZBuffer shadowMask;
+    std::array<double, 3> dValues; // d, dx, dy
+    bool shadow;
+};
 
 #endif //ENGINE_LIGHT_H

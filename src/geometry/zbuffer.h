@@ -19,7 +19,11 @@ class ZBuffer
 {
 public:
     ZBuffer(double width, double height);
+
+    double operator()(uint32_t x, uint32_t y) const;
     bool operator()(uint32_t x, uint32_t y, double depth);
+
+    void toImage() const;
 
 private:
     std::vector<double> buffer;

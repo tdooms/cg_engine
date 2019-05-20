@@ -1,0 +1,1434 @@
+desc: (none)
+cmd: ../cmake-build-debug/engine wireframes052.ini
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=3151165
+mem_heap_B=72704
+mem_heap_extra_B=8
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=6987396
+mem_heap_B=1421936
+mem_heap_extra_B=251528
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=9322037
+mem_heap_B=1423448
+mem_heap_extra_B=253032
+mem_stacks_B=0
+heap_tree=detailed
+n7: 1423448 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 589824 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 589824 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 589824 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 589824 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 589824 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 589824 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 589824 0x110DDB: main (engine.cpp:99)
+ n1: 491520 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 491520 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 491520 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 491520 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 491520 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 491520 0x110DDB: main (engine.cpp:99)
+ n1: 81840 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 81840 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 81840 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 81840 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 81840 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 81840 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 81840 0x110DDB: main (engine.cpp:99)
+ n1: 81840 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 81840 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 81840 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 81840 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 81840 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 81840 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 81840 0x110DDB: main (engine.cpp:99)
+ n1: 81840 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 81840 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 81840 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 81840 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 81840 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 81840 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 81840 0x110DDB: main (engine.cpp:99)
+ n1: 72704 0x4900469: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:123)
+  n1: 72704 0x4010548: call_init.part.0 (in /usr/lib/ld-2.28.so)
+   n1: 72704 0x4010648: _dl_init (in /usr/lib/ld-2.28.so)
+    n1: 72704 0x4002038: ??? (in /usr/lib/ld-2.28.so)
+     n1: 72704 0x0: ???
+      n1: 72704 0x1FFF00011D: ???
+       n0: 72704 0x1FFF000139: ???
+ n0: 23880 in 40 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=4
+#-----------
+time=12341464
+mem_heap_B=2750036
+mem_heap_extra_B=498316
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=14663877
+mem_heap_B=2750552
+mem_heap_extra_B=498824
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=17680210
+mem_heap_B=4076888
+mem_heap_extra_B=743856
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=20005716
+mem_heap_B=4077656
+mem_heap_extra_B=744616
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=23022049
+mem_heap_B=5403992
+mem_heap_extra_B=989648
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=25347424
+mem_heap_B=5404760
+mem_heap_extra_B=990408
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=28363757
+mem_heap_B=6731096
+mem_heap_extra_B=1235440
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=30689131
+mem_heap_B=6731864
+mem_heap_extra_B=1236200
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=33705464
+mem_heap_B=8058200
+mem_heap_extra_B=1481232
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=36030883
+mem_heap_B=8058968
+mem_heap_extra_B=1481992
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=39047216
+mem_heap_B=9385304
+mem_heap_extra_B=1727040
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=41372634
+mem_heap_B=9386072
+mem_heap_extra_B=1727800
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=44388967
+mem_heap_B=10712408
+mem_heap_extra_B=1972832
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=48668377
+mem_heap_B=11015984
+mem_heap_extra_B=1996888
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=52231831
+mem_heap_B=11607904
+mem_heap_extra_B=2060408
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=19
+#-----------
+time=56501038
+mem_heap_B=12955856
+mem_heap_extra_B=2138968
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=60195891
+mem_heap_B=13277392
+mem_heap_extra_B=2299736
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=63218550
+mem_heap_B=13891864
+mem_heap_extra_B=2358056
+mem_stacks_B=0
+heap_tree=detailed
+n12: 13891864 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n1: 1036800 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 1036800 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 1036800 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 1036800 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 1036800 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n2: 491632 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 327760 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 327760 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 327760 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 327760 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 327760 0x110DDB: main (engine.cpp:99)
+  n1: 163872 0x1163A0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 163872 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 163872 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 163872 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 163872 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+ n0: 306152 in 48 places, all below massif's threshold (1.00%)
+ n1: 245816 0x1162FF: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 245816 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 245816 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 245816 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 245816 0x110DDB: main (engine.cpp:99)
+ n1: 207360 0x11B026: Mesh::createCylinder(Vec3 const&, double, unsigned int) (new_allocator.h:111)
+  n1: 207360 0x11DB34: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:39)
+   n1: 207360 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+    n1: 207360 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+     n1: 207360 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 207360 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=22
+#-----------
+time=67156930
+mem_heap_B=14393136
+mem_heap_extra_B=2531008
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=69585517
+mem_heap_B=17578096
+mem_heap_extra_B=2849504
+mem_stacks_B=0
+heap_tree=detailed
+n11: 17578096 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 4723200 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 4723200 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 4723200 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 4723200 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 4723200 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n2: 737280 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 491520 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 491520 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 491520 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 491520 0x110DDB: main (engine.cpp:99)
+  n1: 245760 0x1163A0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 245760 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 245760 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 245760 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 245760 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+ n0: 306152 in 49 places, all below massif's threshold (1.00%)
+ n1: 207360 0x11B026: Mesh::createCylinder(Vec3 const&, double, unsigned int) (new_allocator.h:111)
+  n1: 207360 0x11DB34: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:39)
+   n1: 207360 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+    n1: 207360 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+     n1: 207360 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 207360 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=24
+#-----------
+time=72290350
+mem_heap_B=16588784
+mem_heap_extra_B=2480872
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=74819280
+mem_heap_B=16845008
+mem_heap_extra_B=2609000
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=77980724
+mem_heap_B=17061216
+mem_heap_extra_B=2717104
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=81422521
+mem_heap_B=17463264
+mem_heap_extra_B=2792104
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=85892828
+mem_heap_B=21264496
+mem_heap_extra_B=3218160
+mem_stacks_B=0
+heap_tree=detailed
+n10: 21264496 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 8409600 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 8409600 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 8409600 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 8409600 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 8409600 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n2: 737280 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 491520 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 491520 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 491520 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 491520 0x110DDB: main (engine.cpp:99)
+  n1: 245760 0x1163A0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 245760 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 245760 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 245760 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 245760 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=29
+#-----------
+time=88597661
+mem_heap_B=20275184
+mem_heap_extra_B=2849496
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=91126591
+mem_heap_B=20531408
+mem_heap_extra_B=2977640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=94288035
+mem_heap_B=20747616
+mem_heap_extra_B=3085760
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=97729832
+mem_heap_B=21149664
+mem_heap_extra_B=3160760
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=101580202
+mem_heap_B=24137936
+mem_heap_extra_B=3505536
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=104126511
+mem_heap_B=23715752
+mem_heap_extra_B=3218128
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=107574367
+mem_heap_B=24227760
+mem_heap_extra_B=3351304
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=110160145
+mem_heap_B=24405296
+mem_heap_extra_B=3440072
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=112140483
+mem_heap_B=24705248
+mem_heap_extra_B=3464024
+mem_stacks_B=0
+heap_tree=detailed
+n10: 24705248 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 12096000 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 12096000 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 12096000 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 12096000 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 12096000 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n2: 491632 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 327760 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 327760 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 327760 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 327760 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 327760 0x110DDB: main (engine.cpp:99)
+  n0: 163872 in 1 place, below massif's threshold (1.00%)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=38
+#-----------
+time=114726409
+mem_heap_B=24883760
+mem_heap_extra_B=3553280
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=118174152
+mem_heap_B=28200256
+mem_heap_extra_B=3911784
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=120433822
+mem_heap_B=27402152
+mem_heap_extra_B=3586768
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=123881678
+mem_heap_B=27914160
+mem_heap_extra_B=3719928
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=126467456
+mem_heap_B=28091696
+mem_heap_extra_B=3808696
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=128447794
+mem_heap_B=28391648
+mem_heap_extra_B=3832648
+mem_stacks_B=0
+heap_tree=detailed
+n10: 28391648 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 15782400 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 15782400 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 15782400 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 15782400 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 15782400 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n2: 491632 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 327760 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 327760 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 327760 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 327760 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 327760 0x110DDB: main (engine.cpp:99)
+  n0: 163872 in 1 place, below massif's threshold (1.00%)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=44
+#-----------
+time=131895655
+mem_heap_B=28629824
+mem_heap_extra_B=3951752
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=134814761
+mem_heap_B=32323696
+mem_heap_extra_B=4324128
+mem_stacks_B=0
+heap_tree=detailed
+n10: 32323696 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 19468800 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 19468800 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 19468800 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 19468800 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 19468800 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n2: 737280 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 491520 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 491520 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 491520 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 491520 0x110DDB: main (engine.cpp:99)
+  n0: 245760 in 1 place, below massif's threshold (1.00%)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=46
+#-----------
+time=136741133
+mem_heap_B=31088552
+mem_heap_extra_B=3955408
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=140188989
+mem_heap_B=31600560
+mem_heap_extra_B=4088584
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=142774767
+mem_heap_B=31778096
+mem_heap_extra_B=4177352
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=144755105
+mem_heap_B=32078048
+mem_heap_extra_B=4201304
+mem_stacks_B=0
+heap_tree=detailed
+n10: 32078048 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 19468800 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 19468800 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 19468800 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 19468800 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 19468800 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491632 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n0: 491632 in 2 places, all below massif's threshold (1.00%)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=50
+#-----------
+time=146681639
+mem_heap_B=32210928
+mem_heap_extra_B=4267744
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=148608024
+mem_heap_B=32713056
+mem_heap_extra_B=4363064
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=150534404
+mem_heap_B=35239456
+mem_heap_extra_B=4615704
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=151122072
+mem_heap_B=36010096
+mem_heap_extra_B=4692768
+mem_stacks_B=0
+heap_tree=detailed
+n10: 36010096 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 23155200 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 23155200 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 23155200 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 23155200 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 23155200 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n2: 737280 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 491520 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 491520 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 491520 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 491520 0x110DDB: main (engine.cpp:99)
+  n0: 245760 in 1 place, below massif's threshold (1.00%)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=54
+#-----------
+time=153048444
+mem_heap_B=34774952
+mem_heap_extra_B=4324048
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=154974820
+mem_heap_B=35139280
+mem_heap_extra_B=4383368
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=156901283
+mem_heap_B=35315616
+mem_heap_extra_B=4471536
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=158827668
+mem_heap_B=35447792
+mem_heap_extra_B=4537640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=161062416
+mem_heap_B=35764448
+mem_heap_extra_B=4569944
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=162988950
+mem_heap_B=35897328
+mem_heap_extra_B=4636384
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=164915335
+mem_heap_B=36399456
+mem_heap_extra_B=4731704
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=166841715
+mem_heap_B=38925856
+mem_heap_extra_B=4984344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=167429383
+mem_heap_B=39696496
+mem_heap_extra_B=5061408
+mem_stacks_B=0
+heap_tree=detailed
+n10: 39696496 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 26841600 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 26841600 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 26841600 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 26841600 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 26841600 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n2: 737280 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 491520 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 491520 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 491520 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 491520 0x110DDB: main (engine.cpp:99)
+  n0: 245760 in 1 place, below massif's threshold (1.00%)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=63
+#-----------
+time=169355755
+mem_heap_B=38461352
+mem_heap_extra_B=4692688
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=171282131
+mem_heap_B=38825680
+mem_heap_extra_B=4752008
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=65
+#-----------
+time=173208594
+mem_heap_B=39002016
+mem_heap_extra_B=4840192
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=175134979
+mem_heap_B=39134192
+mem_heap_extra_B=4906280
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=177369727
+mem_heap_B=39450848
+mem_heap_extra_B=4938584
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=179296261
+mem_heap_B=39583728
+mem_heap_extra_B=5005024
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=181222646
+mem_heap_B=40085856
+mem_heap_extra_B=5100344
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=183149026
+mem_heap_B=42612256
+mem_heap_extra_B=5352984
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=183736694
+mem_heap_B=43382896
+mem_heap_extra_B=5430048
+mem_stacks_B=0
+heap_tree=detailed
+n10: 43382896 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 30528000 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 30528000 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 30528000 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 30528000 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 30528000 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n2: 737280 0x115FAB: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (new_allocator.h:111)
+  n1: 491520 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+   n1: 491520 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+    n1: 491520 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 491520 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 491520 0x110DDB: main (engine.cpp:99)
+  n0: 245760 in 1 place, below massif's threshold (1.00%)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 50 places, all below massif's threshold (1.00%)
+ n1: 497864 0x1168EE: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_rehash(unsigned long, unsigned long const&) (new_allocator.h:111)
+  n1: 497864 0x116A42: std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_insert_unique_node(unsigned long, unsigned long, std::__detail::_Hash_node<Index, false>*, unsigned long) (hashtable.h:1732)
+   n1: 497864 0x11607F: std::pair<std::__detail::_Node_iterator<Index, true, false>, bool> std::_Hashtable<Index, Index, std::allocator<Index>, std::__detail::_Identity, std::equal_to<Index>, std::hash<Index>, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<false, true, true> >::_M_emplace<unsigned int const&, unsigned int const&>(std::integral_constant<bool, true>, unsigned int const&, unsigned int const&) [clone .constprop.153] (hashtable.h:1679)
+    n1: 497864 0x116375: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (hashtable.h:748)
+     n1: 497864 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+      n1: 497864 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+       n1: 497864 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+        n0: 497864 0x110DDB: main (engine.cpp:99)
+ n1: 491328 0x116545: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 491328 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 491328 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 491328 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 491328 0x110DDB: main (engine.cpp:99)
+#-----------
+snapshot=72
+#-----------
+time=185663066
+mem_heap_B=42147752
+mem_heap_extra_B=5061328
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=197875644
+mem_heap_B=44369000
+mem_heap_extra_B=5061328
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=421838575
+mem_heap_B=44369000
+mem_heap_extra_B=5061328
+mem_stacks_B=0
+heap_tree=peak
+n8: 44369000 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 30528000 0x1163F0: doProjection(std::vector<Mesh, std::allocator<Mesh> > const&, double) (new_allocator.h:111)
+  n1: 30528000 0x116631: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:290)
+   n1: 30528000 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+    n1: 30528000 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+     n0: 30528000 0x110DDB: main (engine.cpp:99)
+ n1: 4718592 0x11E955: std::vector<Vec3, std::allocator<Vec3> >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 4718592 0x11C75D: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:193)
+   n1: 4718592 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 4718592 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 4718592 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 4718592 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 4718592 0x110DDB: main (engine.cpp:99)
+ n1: 3932160 0x11EA62: std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >::reserve(unsigned long) (new_allocator.h:111)
+  n1: 3932160 0x11C787: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:194)
+   n1: 3932160 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 3932160 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 3932160 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 3932160 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 3932160 0x110DDB: main (engine.cpp:99)
+ n1: 2712576 0x111CBC: img::EasyImage::EasyImage(double, double, Vec3 const&) (new_allocator.h:111)
+  n1: 2712576 0x115CD1: drawLines(std::forward_list<Line2D, std::allocator<Line2D> > const&, Vec3 const&, int, bool) (lines2D.cpp:361)
+   n1: 2712576 0x116646: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:291)
+    n1: 2712576 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 2712576 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 2712576 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C3F2: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C49B: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n1: 654720 0x11C541: Mesh::subdivTriangle(std::vector<Vec3, std::allocator<Vec3> >&, std::vector<std::vector<unsigned int, std::allocator<unsigned int> >, std::allocator<std::vector<unsigned int, std::allocator<unsigned int> > > >&, unsigned int) (new_allocator.h:111)
+  n1: 654720 0x11C7CB: Mesh::createSphere(Vec3 const&, unsigned int) (mesh.cpp:199)
+   n1: 654720 0x11DF5A: Mesh::parseFigure(ini::Section const&, Mat4 const&) (mesh.cpp:50)
+    n1: 654720 0x112E47: parseFigures(ini::Configuration const&) (engine.cpp:23)
+     n1: 654720 0x1132FD: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:52)
+      n1: 654720 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+       n0: 654720 0x110DDB: main (engine.cpp:99)
+ n0: 513512 in 53 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=75
+#-----------
+time=423764977
+mem_heap_B=39397560
+mem_heap_extra_B=4564184
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=425691379
+mem_heap_B=34426200
+mem_heap_extra_B=4067048
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=427617781
+mem_heap_B=29454840
+mem_heap_extra_B=3569912
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=429544183
+mem_heap_B=24483480
+mem_heap_extra_B=3072776
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=431470585
+mem_heap_B=19512120
+mem_heap_extra_B=2575624
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=433396987
+mem_heap_B=14540760
+mem_heap_extra_B=2078488
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=435323385
+mem_heap_B=11076464
+mem_heap_extra_B=1406472
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=437249769
+mem_heap_B=7132004
+mem_heap_extra_B=705948
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=439176144
+mem_heap_B=2945080
+mem_heap_extra_B=17640
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=84
+#-----------
+time=600375312
+mem_heap_B=2807991
+mem_heap_extra_B=7105
+mem_stacks_B=0
+heap_tree=detailed
+n3: 2807991 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n1: 2712576 0x111CBC: img::EasyImage::EasyImage(double, double, Vec3 const&) (new_allocator.h:111)
+  n1: 2712576 0x115CD1: drawLines(std::forward_list<Line2D, std::allocator<Line2D> > const&, Vec3 const&, int, bool) (lines2D.cpp:361)
+   n1: 2712576 0x116646: drawFigures(std::vector<Mesh, std::allocator<Mesh> > const&, Vec3 const&, unsigned int, double, bool) (lines2D.cpp:291)
+    n1: 2712576 0x11334B: generate_wireframe(ini::Configuration const&, bool) (engine.cpp:53)
+     n1: 2712576 0x114061: generate_image(ini::Configuration const&) (engine.cpp:70)
+      n0: 2712576 0x110DDB: main (engine.cpp:99)
+ n1: 72704 0x4900469: _GLOBAL__sub_I_eh_alloc.cc (eh_alloc.cc:123)
+  n1: 72704 0x4010548: call_init.part.0 (in /usr/lib/ld-2.28.so)
+   n1: 72704 0x4010648: _dl_init (in /usr/lib/ld-2.28.so)
+    n1: 72704 0x4002038: ??? (in /usr/lib/ld-2.28.so)
+     n1: 72704 0x0: ???
+      n1: 72704 0x1FFF00011D: ???
+       n0: 72704 0x1FFF000139: ???
+ n0: 22711 in 60 places, all below massif's threshold (1.00%)

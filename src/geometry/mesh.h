@@ -38,7 +38,7 @@ struct Mesh
     Mesh& operator*=(const Mat4& transform);
     Mesh operator*(const Mat4& transform) const;
 
-    static Mesh parseFigure(const ini::Section& section, const Mat4& eye);
+    static Mesh parseFigure(const ini::Section& section);
     static Mesh createLineDrawing(const Material& material, const ini::Section& section);
 
     static Mesh createCube(const Material& material);
@@ -47,7 +47,7 @@ struct Mesh
     static Mesh createIcosahedron(const Material& material);
     static Mesh createDodecahedron(const Material& material);
 
-    static Mesh createCylinder(const Material& material, double height, uint32_t num);
+    static Mesh createCylinder(const Material& material, double height, uint32_t num, bool edges = true);
     static Mesh createCone(const Material& material, double height, uint32_t num);
     static Mesh createSphere(const Material& material, uint32_t depth);
     static Mesh createTorus(const Material& material, double R, double r, uint32_t n, uint32_t m);
@@ -66,6 +66,8 @@ struct Mesh
 
     static Mesh mergeMeshes(const std::vector<Mesh>& meshes);
     static Mesh mergeMengerSponge(const std::vector<Mesh> &meshes);
+
+    static Mesh generateThickMesh(const Mesh& mesh, double r, uint32_t cylinderDepth, uint32_t sphereDepth, const Material& material);
 
     std::vector<Vec3> vertices;
     std::vector<std::vector<uint32_t>> indices;

@@ -64,6 +64,8 @@ private:
     double angle;
     uint32_t maxDepth;
 
+    bool hasChanged = true;
+
     std::forward_list<std::tuple<Vec3, uint32_t, uint32_t>> lines;
 
     uint32_t lastIndex;

@@ -12,24 +12,7 @@
 #include <unordered_set>
 #include <cmath>
 #include <cassert>
-
-struct Index
-{
-    Index(const uint32_t p1, const uint32_t p2) : p1(p1), p2(p2) {}
-    friend bool operator==(const Index& a, const Index& b);
-
-    uint32_t p1, p2;
-};
-bool operator==(const Index& a, const Index& b)
-{
-    return a.p1 == b.p2 and a.p2 == b.p1;       // because every face is ccw we know the indices will be inversed.
-}
-
-template<>
-struct std::hash<Index>
-{
-    size_t operator()(const Index& a) const noexcept { return ((a.p1 << 16) + a.p2) + (((a.p2 << 16) + a.p1)); }
-};
+#include "index.h"
 
 
 void drawLine(img::EasyImage& image, const Vec3& p1, const Vec3& p2, const Color& color)
@@ -170,25 +153,35 @@ void drawLine(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3
     }
 }
 
-void calculateLights(std::array<Color, 3>& colors, const Vec3& pos, const Vec3& normal, const Light& light, double reflection, bool directional)
+void calculateLights(std::array<Color, 3>& colors, const Vec3& pos, const Vec3& normal, double reflection, bool directional, const Light& light)
 {
-    const Vec3 l = (directional) ? -light.getDirection() : normalize(light.getPosition() - pos);
+    const Vec3 l = (directional) ? -light.vector : normalize(light.vector - pos);
 
-    colors[0] += light.getAmbient();
+    colors[0] += light.light[0];
 
     const double cosa = dot(l, normal);
-    if(cosa > 0) colors[1] += light.getDiffuse() * cosa;
+    if(cosa > 0) colors[1] += light.light[1] * cosa;
 
     const Vec3 r = 2*cosa*normal - l;
     const double cosb = dot(-normalize(pos), normalize(r));
-    if(cosb > 0) colors[2] += (light.getSpecular() * std::pow(cosb, reflection));
+    if(cosb > 0) colors[2] += (light.light[2] * std::pow(cosb, reflection));
 }
 
-img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& material)
+img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& material, const Vec3* pos, const Texture* texture)
 {
-    colors[0] ^= material.ambient;
-    colors[1] ^= material.diffuse;
-    colors[2] ^= material.specular;
+    if(texture == nullptr)
+    {
+        colors[0] ^= material.ambient;
+        colors[1] ^= material.diffuse;
+        colors[2] ^= material.specular;
+    }
+    else
+    {
+        const auto& material = Texture::getColor(texture, *pos);
+        colors[0] ^= material.ambient;
+        colors[1] ^= material.diffuse;
+        colors[2] ^= material.specular;
+    }
 
     Color color = colors[0] + colors[1] + colors[2];
     color[0] = std::min(color[0], 1.0); color[1] = std::min(color[1], 1.0); color[2] = std::min(color[2], 1.0);
@@ -196,7 +189,7 @@ img::Color combineLights(std::array<Color, 3>& colors, const Mesh::Material& mat
 }
 
 void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const Vec3& p2, const Vec3& p3, double d, const Vec2& dxy,
-        const Mesh::Material& material, const std::vector<Light>& directional, const std::vector<Light>& point)
+        const Mesh::Material& material, const std::vector<Light>& directional, const std::vector<Light>& point, bool depthOnly, const Mat4& invEye, const Texture* texture)
 {
     Vec3 temp1 = p1;
     Vec3 temp2 = p2;
@@ -206,7 +199,7 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     temp2[0] *= -d/temp2[2]; temp2[1] *= -d/temp2[2];
     temp3[0] *= -d/temp3[2]; temp3[1] *= -d/temp3[2];
 
-    if((p2[0] - p1[0]) * (p3[1] - p1[1]) - (p3[0] - p1[0]) * (p2[1] - p1[1]) < 0) return; // backface culling
+    if(!depthOnly and ( ((p2[0] - p1[0]) * (p3[1] - p1[1]) - (p3[0] - p1[0]) * (p2[1] - p1[1])) < 0 )) return; // backface culling
 
     temp1 += dxy;
     temp2 += dxy;
@@ -231,8 +224,8 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
     std::array<Color, 3> colors;  // ambient, diffuse, specular
     img::Color rgb;
 
-    for(const auto& light : directional) calculateLights(colors, (p1+p2+p3)/3, normal, light, material.reflection, true);
-    if(point.empty())
+    for(const auto& light : directional) calculateLights(colors, (p1+p2+p3)/3, normal, material.reflection, true, light);
+    if(point.empty() and texture == nullptr)
     {
         rgb = combineLights(colors, material);
     }
@@ -266,45 +259,76 @@ void drawTriangle(img::EasyImage& image, ZBuffer& buffer, const Vec3& p1, const 
         }
         for(auto x = (uint32_t)std::ceil(xMin); x < (uint32_t)std::ceil(xMax); x++)
         {
-            const double depth = (1.0001 * middleZ) + (x - g[0])*dzdx + (y - g[1])*dzdy;
-            const Vec2 temp = {double(x), double(y)};
-            const Vec3 pos = { (temp-dxy)/(-depth*d), 1.0/depth };
+            const double depth = middleZ + (x - g[0])*dzdx + (y - g[1])*dzdy;
 
             if(!point.empty())
             {
+                const Vec2 tempVec = {double(x), double(y)};
+                const Vec3 pos = { (tempVec-dxy)/(-depth*d), 1.0/depth };
+                Vec3 real = pos;
+                real *= invEye;
+
                 std::array<Color, 3> pixelColors = colors; // ambient, diffuse, specular
-                for(const auto& light : point) calculateLights(pixelColors, pos, normal, light, material.reflection, false);
-                rgb = combineLights(pixelColors, material);
+                for(const auto& light : point)
+                {
+                    if(light.shadow)
+                    {
+                        Vec3 temp = real;
+                        temp *= light.eye;
+                        const double inv = -light.dValues[0]/temp[2];
+                        temp = {temp[0]*inv + light.dValues[1], temp[1]*inv + light.dValues[2], 1.0/temp[2]};
+
+                        const double xMantissa = temp[0] - std::floor(temp[0]);
+                        const double yMantissa = temp[1] - std::floor(temp[1]);
+
+                        const double inter1 = (1-xMantissa) * light.shadowMask(std::floor(temp[0]), std::floor(temp[1])) + xMantissa * light.shadowMask(std::ceil(temp[0]), std::floor(temp[1]));
+                        const double inter2 = (1-xMantissa) * light.shadowMask(std::floor(temp[0]), std::ceil( temp[1])) + xMantissa * light.shadowMask(std::ceil(temp[0]), std::ceil( temp[1]));
+                        const double realDepth = (1-yMantissa)*inter1 + yMantissa*inter2;
+
+                        if(std::abs(temp[2] - realDepth) < 0.0001) calculateLights(pixelColors, pos, normal, material.reflection, false, light);
+                        else pixelColors[0] += light.light[0];  // ambient
+                    }
+                    else calculateLights(pixelColors, pos, normal, material.reflection, false, light);
+                }
+                rgb = combineLights(pixelColors, material, &pos, texture);
             }
-            if( buffer(x, y, depth) ) image(x,y) = rgb;
+            if( buffer(x, y, depth) and !depthOnly ) image(x,y) = rgb;
         }
     }
 }
 
-img::EasyImage drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background, uint32_t size, const std::vector<Light>& directional, const std::vector<Light>& point)
+std::tuple<img::EasyImage, ZBuffer, std::tuple<double, double, double, double, double>> drawTriangulatedMeshes(const std::vector<Mesh>& figures, const Color& background,
+        uint32_t size, const std::vector<Light>& directional, const std::vector<Light>& point, const Mat4& eye, bool depthOnly, const Texture* texture)
 {
-    const auto ranges   = getRanges(figures, size, 1);
+    std::vector<Mesh> newFigures = figures;
+    for(auto& figure : newFigures) figure *= eye;
+
+    const auto ranges   = getRanges(newFigures, size, 1);
     const double d      = std::get<0>(ranges);
     const double width  = std::get<1>(ranges);
     const double height = std::get<2>(ranges);
     const double dx     = std::get<3>(ranges);
     const double dy     = std::get<4>(ranges);
 
-    img::EasyImage image(width, height, background);
+    const Mat4 invEye = Mat4::inverse(eye);
+
+    img::EasyImage image;
+    if(!depthOnly) image = {width, height, background};
+
     ZBuffer buffer(width, height);
 
-    for(const Mesh& figure : figures)
+    for(const Mesh& figure : newFigures)
     {
         auto newIndices = Mesh::triangulate(figure.indices);
         for(const auto& triangle : newIndices)
         {
-            drawTriangle(image, buffer, figure.vertices[triangle[0]], figure.vertices[triangle[1]], figure.vertices[triangle[2]], d, {dx, dy}, figure.material, directional, point);
+            drawTriangle(image, buffer, figure.vertices[triangle[0]],  figure.vertices[triangle[1]],  figure.vertices[triangle[2]], d, {dx, dy}, figure.material, directional, point, depthOnly, invEye, texture);
         }
     }
-    return image;
+    return {image, buffer, ranges};
 }
 
-std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const double d)
+std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const double d, const Mat4& eye)
 {
     std::forward_list<Line2D> lines;
 
@@ -315,11 +339,11 @@ std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const d
         for (const Vec3& point : figures[i].vertices)
         {
             // apply depth division to x an y coordinates
-            Vec3 temp;
-            const double div = -(d/point[2]);
-            temp[0] = point[0]*div;
-            temp[1] = point[1]*div;
-            temp[2] = point[2];
+            Vec3 temp = point;
+            temp *= eye;
+            const double div = -(d/temp[2]);
+            temp[0] = temp[0]*div;
+            temp[1] = temp[1]*div;
             projectedVertices.push_back(temp);
         }
         // size of the hashmap = amount of lines / 2 because half of the lines will be deleted
@@ -339,9 +363,9 @@ std::forward_list<Line2D> doProjection(const std::vector<Mesh>& figures, const d
 }
 
 
-img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, const uint32_t size, const double d, const bool depthBuffer)
+img::EasyImage drawFigures(const std::vector<Mesh>& figures, const Color& background, const uint32_t size, const double d, const bool depthBuffer, const Mat4& eye)
 {
-    auto lines = doProjection(figures, d);
+    auto lines = doProjection(figures, d, eye);
     return drawLines(lines, background, size, depthBuffer);
 }
 
@@ -401,11 +425,6 @@ std::tuple<double, double, double, double, double> getRanges(const std::forward_
     const double dy = (height - scale * (yMax + yMin)) / 2.0;
 
     return {scale, width, height, dx, dy};
-}
-
-Vec3 getNormal(const std::vector<Vec3>& triangle)
-{
-    return normalize(cross(triangle[1]-triangle[0], triangle[2]-triangle[0]));
 }
 
 img::EasyImage drawLines(const std::forward_list<Line2D>& lines, const Color& background, const int size, const bool depthBuffer)

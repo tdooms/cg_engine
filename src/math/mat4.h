@@ -37,6 +37,12 @@ struct Mat4
 
     /*----------------------------------------*/
 
+    static double determinant(const Mat4& m);
+    static Mat4 adjugate(const Mat4& m);
+    static Mat4 inverse(const Mat4& m);
+
+    /*----------------------------------------*/
+
     double& operator[](int index) { return data[index]; }
     double operator[](int index) const { return data[index]; }
 

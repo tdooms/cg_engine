@@ -14,53 +14,73 @@
 #include <stdexcept>
 #include <string>
 
-std::vector<Mesh> parseFigures(const ini::Configuration& configuration)
+Mat4 parseEyeSpace(const ini::Configuration& configuration)
 {
     const std::vector<double> eyePos = configuration["General"]["eye"];
-    const Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
+    return Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
+}
 
+std::vector<Mesh> parseFigures(const ini::Configuration& configuration)
+{
     const uint32_t numFigures = static_cast<uint32_t>((int)configuration["General"]["nrFigures"]);
 
     std::vector<Mesh> figures(numFigures);
     for(uint32_t i = 0; i < numFigures; i++)
     {
-        figures[i] =  Mesh::parseFigure(configuration["Figure" + std::to_string(i)], eyeSpace) ;
+        figures[i] =  Mesh::parseFigure(configuration["Figure" + std::to_string(i)]);
     }
     return figures;
 }
 
-std::pair<std::vector<Light>, std::vector<Light>> parseLights(const ini::Configuration& configuration)
+std::pair<std::vector<Light>, std::vector<Light>> parseLights(const ini::Configuration& configuration, const std::vector<Mesh>& figures)
 {
-    const std::vector<double> eyePos = configuration["General"]["eye"];
-    const Mat4 eyeSpace = Mat4::createEyeTransformationMatrix(eyePos[0], eyePos[1], eyePos[2]);
-    Mat4 eyeRotation = eyeSpace;
+    const Mat4 eyeSpace = parseEyeSpace(configuration);
+    Mat4 eyeRotation = parseEyeSpace(configuration);
     eyeRotation[14] = 0;
 
+    bool shadows = configuration["General"]["shadowEnabled"].as_bool_or_default(false);
+    uint32_t size = configuration["General"]["shadowMask"].as_int_or_default(0);
 
-    const uint32_t numLights = static_cast<uint32_t>((int)configuration["General"]["nrLights"]);
+    const uint32_t numLights = static_cast<uint32_t>((int) configuration["General"]["nrLights"]);
     std::vector<Light> directional;
     std::vector<Light> point;
 
-    for(uint32_t i = 0; i < numLights; i++)
+    for (uint32_t i = 0; i < numLights; i++)
     {
-        std::vector<double> ambient  = configuration["Light" + std::to_string(i)]["ambientLight" ].as_double_tuple_or_default({0,0,0});
-        std::vector<double> diffuse  = configuration["Light" + std::to_string(i)]["diffuseLight" ].as_double_tuple_or_default({0,0,0});
-        std::vector<double> specular = configuration["Light" + std::to_string(i)]["specularLight"].as_double_tuple_or_default({0,0,0});
+        std::vector<double> ambient = configuration["Light" +
+                                                    std::to_string(i)]["ambientLight"].as_double_tuple_or_default({0, 0,
+                                                                                                                   0});
+        std::vector<double> diffuse = configuration["Light" +
+                                                    std::to_string(i)]["diffuseLight"].as_double_tuple_or_default({0, 0,
+                                                                                                                   0});
+        std::vector<double> specular = configuration["Light" +
+                                                     std::to_string(i)]["specularLight"].as_double_tuple_or_default({0,
+                                                                                                                     0,
+                                                                                                                     0});
 
         auto type = configuration["Light" + std::to_string(i)]["infinity"];
-        if(type.exists() and type)
+        if (type.exists() and type)
         {
             Vec3 direction = configuration["Light" + std::to_string(i)]["direction"].as_double_tuple_or_die();
             direction *= eyeRotation;
             directional.emplace_back(ambient, diffuse, specular, normalize(direction));
-        }
-        else if(type.exists() and not type)
+        } else if (type.exists() and not type)
         {
             Vec3 position = configuration["Light" + std::to_string(i)]["location"].as_double_tuple_or_die();
-            position *= eyeSpace;
-            point.emplace_back(ambient, diffuse, specular, position);
-        }
-        else
+            if (shadows)
+            {
+                const Mat4 lightSpace = Mat4::createEyeTransformationMatrix(position[0], position[1], position[2]);
+                const auto result = drawTriangulatedMeshes(figures, {}, size, {}, {}, lightSpace, true);
+                const auto tuple = std::get<2>(result);
+                //std::get<1>(result).toImage();
+                point.emplace_back(ambient, diffuse, specular, position *= eyeSpace, lightSpace, std::get<1>(result), std::array<double, 3>{
+                        std::get<0>(tuple), std::get<3>(tuple), std::get<4>(tuple)}, true);
+            } else
+            {
+                position *= eyeSpace;
+                point.emplace_back(ambient, diffuse, specular, position);
+            }
+        } else
         {
             point.emplace_back(ambient, diffuse, specular);
         }
@@ -93,7 +113,7 @@ img::EasyImage generate_wireframe(const ini::Configuration& configuration, bool 
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
     auto figures = parseFigures(configuration);
-    return drawFigures(figures, background, size, 1, depthBuffered);
+    return drawFigures(figures, background, size, 1, depthBuffered, parseEyeSpace(configuration));
 }
 
 img::EasyImage generate_mesh(const ini::Configuration& configuration)
@@ -102,7 +122,29 @@ img::EasyImage generate_mesh(const ini::Configuration& configuration)
     const std::vector<double> background = configuration["General"]["backgroundcolor"];
 
     auto figures = parseFigures(configuration);
-    return drawTriangulatedMeshes(figures, background, size, {{{1,1,1}, {}, {}}}, {});
+    return std::get<0>(drawTriangulatedMeshes(figures, background, size, {{{1,1,1}, {}, {}}}, {}, parseEyeSpace(configuration)));
+}
+
+img::EasyImage generate_lighting(const ini::Configuration& configuration)
+{
+    const int size = configuration["General"]["size"];
+    const std::vector<double> background = configuration["General"]["backgroundcolor"];
+
+    auto figures = parseFigures(configuration);
+    auto lights = parseLights(configuration, figures);
+
+
+    if(configuration["General"]["texture"].as_bool_or_default(false))
+    {
+        Texture texture = Texture::parseTexture(configuration["Texture"]);
+        return std::get<0>(drawTriangulatedMeshes(figures, background, size, std::get<0>(lights), std::get<1>(lights), parseEyeSpace(configuration), false, &texture));
+    }
+    else
+    {
+        return std::get<0>(drawTriangulatedMeshes(figures, background, size, std::get<0>(lights), std::get<1>(lights), parseEyeSpace(configuration)));
+    }
+
+
 }
 
 img::EasyImage generate_raytraced(const ini::Configuration& configuration)
@@ -121,17 +163,6 @@ img::EasyImage generate_raytraced(const ini::Configuration& configuration)
     for(const auto& hitable  : world.first ) delete hitable ;
 
     return camera.exportFilm();
-}
-
-img::EasyImage generate_lighting(const ini::Configuration& configuration)
-{
-    const int size = configuration["General"]["size"];
-    const std::vector<double> background = configuration["General"]["backgroundcolor"];
-
-    auto figures = parseFigures(configuration);
-    auto lights = parseLights(configuration);
-
-    return drawTriangulatedMeshes(figures, background, size, std::get<0>(lights), std::get<1>(lights));
 }
 
 img::EasyImage generate_image(const ini::Configuration& configuration)
